@@ -61,12 +61,12 @@ public class chassisTest extends LinearOpMode {
 
             //making motors run.
             //strafing
-            if (strafeValue < 0.1) {
+            if (strafeValue < -0.1) {
                 frontLeft.setPower(-strafeValue);
                 frontRight.setPower(strafeValue);
                 backLeft.setPower(strafeValue);
                 backRight.setPower(-strafeValue);
-            } else if (strafeValue > -0.1) {
+            } else if (strafeValue > 0.1) {
                 frontLeft.setPower(-strafeValue);
                 frontRight.setPower(strafeValue);
                 backLeft.setPower(strafeValue);
