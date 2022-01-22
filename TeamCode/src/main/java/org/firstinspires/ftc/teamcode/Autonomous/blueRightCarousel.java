@@ -98,16 +98,23 @@ public class blueRightCarousel extends LinearOpMode {
             // turn 90
             gyroTurning(90);
 
+            //fowerd
+            move(.5, 400);
+
             //crane down
-            crane.setPower(.2);
-            sleep(500);
+            crane.setPower(.7);
+            sleep(2000);
 
             //close claw
             arm.setPosition(0);
-      sleep(400);
+            sleep(400);
 
             //crane up
             crane.setPower(-.5);
+            sleep(1000);
+
+            //move back
+            move(-.5, 400 );
 
             //turn back
             gyroTurning(0);
