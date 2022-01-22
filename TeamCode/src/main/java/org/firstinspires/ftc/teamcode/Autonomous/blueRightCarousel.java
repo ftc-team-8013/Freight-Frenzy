@@ -40,43 +40,42 @@ public class blueRightCarousel extends LinearOpMode {
         initGyro();
 
         waitForStart();
-        telemetry.addLine("cheers");
+        telemetry.addLine("Y'all ready for this?");
         telemetry.update();
 
         if (opModeIsActive()) {
             //closing the arm and waiting so we know the block is in possession
             arm.setPosition(0);
-            sleep(500);
+            sleep(400);
 
             //move forwards a few inches
             move(0.25, 500);
 
             //turning 90 degrees counterclockwise
-            //gyroTurning(90);
+            gyroTurning(90);
 
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(-0.5);
-            frontRight.setPower(0.5);
-           backRight.setPower(0.5);
-            sleep(680);
-            stopMotors();
+            //frontLeft.setPower(-0.5);
+            //backLeft.setPower(-0.5);
+            //frontRight.setPower(0.5);
+           //backRight.setPower(0.5);
+            //sleep(710);
+            //stopMotors();
 
             //reverse back into carousel
-            move(-0.4, 700);
+            move(-0.4, 600);
 
-            //basic sleeping to make sure we are turning the motors as soon as the robot stops
-            sleep(500);
+
 
             //turns on the carousel motor to get the duck onto the floor
-            carouselMotor(.85, 4500);
-            //changed power of moter from .5
+            //spin while moving forward
+            carouselMotor(1, 1550);
 
             //turning on the crane motor making the crane go up and avoid the terrain
             crane.setPower(-0.5);
             sleep(500);
 
 
-            //moving to warehouse
+            //move toward warehouse
             move(0.5, 1550);
 
             //turning to shipping hub
@@ -85,50 +84,50 @@ public class blueRightCarousel extends LinearOpMode {
 
             //move to delivery
             move(0.25, 1280);
-            sleep(750);
+            sleep(550);
 
             //open claw
             arm.setPosition(1);
-            sleep(750);
+            sleep(550);
+
 
             //move back from shipping hub
-            move(-0.5, 200);
-            //250 to 200
-
-            // turn 90
-            gyroTurning(90);
-
-            //fowerd
-            move(.5, 400);
+            move(-0.5, 250);
 
             //crane down
-            crane.setPower(.7);
-            sleep(2000);
+            crane.setPower(1);
+            sleep(1150);
+            crane.setPower(0);
 
-            //close claw
+            // turn 45
+            gyroTurning(45);
+            sleep(300);
+            //tweak
+
+            move(.3, 250);
+            sleep(300);
+
             arm.setPosition(0);
-            sleep(400);
-
-            //crane up
-            crane.setPower(-.5);
-            sleep(1000);
-
-            //move back
-            move(-.5, 400 );
-
-            //turn back
-            gyroTurning(0);
             sleep(500);
 
-            //claw open
-            arm.setPosition(1);
-            sleep(400);
+            crane.setPower(-.6);
+            sleep(2000);
 
-            //turn
+            gyroTurning(-20);
+            sleep(300);
+
+            move(.25, 400);
+
+            arm.setPosition(1);
+            sleep(300);
+
             gyroTurning(90);
 
+            move(1, 2000);
+
+
             //move to warehouse
-            move(0.70, 2200);
+            //move(0.70, 2200);
 
             //small reverse to stop.
             move (-0.5, 200);
