@@ -94,7 +94,7 @@ public class blueRightCarousel extends LinearOpMode {
 
 
             //move back from shipping hub
-            move(-0.5, 250);
+            move(-0.5, 325);
 
             //crane down
             crane.setPower(1);
@@ -102,11 +102,11 @@ public class blueRightCarousel extends LinearOpMode {
             crane.setPower(0);
 
             // turn 45
-            gyroTurning(45);
+            gyroTurning(55);
             sleep(300);
             //tweak
 
-            move(.3, 350);
+            move(.3, 700);
             sleep(200);
 
             arm.setPosition(0);
