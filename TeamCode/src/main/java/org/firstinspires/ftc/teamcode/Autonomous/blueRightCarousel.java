@@ -11,11 +11,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 @Autonomous
 
@@ -33,6 +35,7 @@ public class blueRightCarousel extends LinearOpMode {
     DcMotor carousel;
     DcMotor crane;
     Servo arm;
+    TouchSensor Touch;
 
     public void runOpMode() {
         initDriveMotors();
@@ -63,19 +66,15 @@ public class blueRightCarousel extends LinearOpMode {
 
             //reverse back into carousel
             move(-0.4, 600);
-
             sleep(150);
-
-
 
             //turns on the carousel motor to get the duck onto the floor
             //spin while moving forward
-            carouselMotor(1, 1570);
+            carouselMotor(0.9, 1600);
 
             //turning on the crane motor making the crane go up and avoid the terrain
             crane.setPower(-0.5);
             sleep(500);
-
 
             //move toward warehouse
             move(0.5, 1550);
@@ -85,35 +84,36 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(500);
 
             //move to delivery
-            move(0.25, 1380);
+            move(0.25, 1330);
             sleep(550);
 
             //open claw
             arm.setPosition(1);
             sleep(550);
 
-
             //move back from shipping hub
-            move(-0.5, 325);
+            move(-0.5, 300);
 
-            //crane down
-            crane.setPower(1);
-            sleep(1125);
+
+            //turning off crane motor when in the down position
+            while (Touch.isPressed() != true) {
+                crane.setPower(1);
+            }
             crane.setPower(0);
 
             // turn 45
-            gyroTurning(55);
+            gyroTurning(50);
             sleep(300);
             //tweak
 
-            move(.3, 700);
-            sleep(200);
+            move(.3, 730);
+            sleep(150);
 
             arm.setPosition(0);
             sleep(500);
 
-            crane.setPower(-.6);
-            sleep(2000);
+            crane.setPower(.5);
+            sleep(500);
 
             gyroTurning(-20);
             sleep(300);
@@ -146,6 +146,7 @@ public class blueRightCarousel extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+        Touch = hardwareMap.get(TouchSensor.class, "Touch" );
 
         //Setting direction of motors.
         frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -184,14 +185,14 @@ public class blueRightCarousel extends LinearOpMode {
                 backLeft.setPower(0);
                 backRight.setPower(0);
                 foundAngle = true;
-                sleep(1500);
+                sleep(1000);
                 break;
             } else if (angles.firstAngle >= targetAngle + 0.5) {
                 if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.15);
-                    frontRight.setPower(-0.15);
-                    backLeft.setPower(0.15);
-                    backRight.setPower(-0.15);
+                    frontLeft.setPower(0.2);
+                    frontRight.setPower(-0.2);
+                    backLeft.setPower(0.2);
+                    backRight.setPower(-0.2);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(0.5);
@@ -202,10 +203,10 @@ public class blueRightCarousel extends LinearOpMode {
                 }
             } else if (angles.firstAngle <= targetAngle - 0.5) {
                 if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.15);
-                    frontRight.setPower(0.15);
-                    backLeft.setPower(-0.15);
-                    backRight.setPower(0.15);
+                    frontLeft.setPower(-0.2);
+                    frontRight.setPower(0.2);
+                    backLeft.setPower(-0.2);
+                    backRight.setPower(0.2);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(-0.5);
@@ -254,7 +255,7 @@ public class blueRightCarousel extends LinearOpMode {
         stopMotors();
     }
 
-    //Other methods
+    //Other method
     public void carouselMotor(double power, int time){
         carousel.setPower(power);
         sleep(time);
