@@ -57,13 +57,6 @@ public class blueRightCarousel extends LinearOpMode {
             //turning 90 degrees counterclockwise
             gyroTurning(90);
 
-            //frontLeft.setPower(-0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(0.5);
-           //backRight.setPower(0.5);
-            //sleep(710);
-            //stopMotors();
-
             //reverse back into carousel
             move(-0.4, 600);
             sleep(150);
@@ -123,14 +116,14 @@ public class blueRightCarousel extends LinearOpMode {
             arm.setPosition(1);
             sleep(300);
 
-            //gyroTurning(90);
+            gyroTurning(90);
 
-            frontLeft.setPower(-0.6);
-            backLeft.setPower(-0.6);
-            frontRight.setPower(0.6);
-            backRight.setPower(0.6);
-            sleep(650);
-            stopMotors();
+            //frontLeft.setPower(-0.6);
+            //backLeft.setPower(-0.6);
+            //frontRight.setPower(0.6);
+            //backRight.setPower(0.6);
+            //sleep(650);
+            //stopMotors();
 
             move(1, 1500);
 
