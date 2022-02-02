@@ -1,7 +1,6 @@
-
-//TODO: Test Code
-
 package org.firstinspires.ftc.teamcode.Autonomous;
+
+import android.text.method.Touch;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -35,7 +34,7 @@ public class blueRightCarousel extends LinearOpMode {
     DcMotor carousel;
     DcMotor crane;
     Servo arm;
-    TouchSensor Touch;
+    TouchSensor touch;
 
     public void runOpMode() {
         initDriveMotors();
@@ -87,9 +86,8 @@ public class blueRightCarousel extends LinearOpMode {
             //move back from shipping hub
             move(-0.5, 300);
 
-
             //turning off crane motor when in the down position
-            while (Touch.isPressed() != true) {
+            while (touch.isPressed() != true) {
                 crane.setPower(1);
             }
             crane.setPower(0);
@@ -139,7 +137,7 @@ public class blueRightCarousel extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        Touch = hardwareMap.get(TouchSensor.class, "Touch" );
+        touch = hardwareMap.get(TouchSensor.class, "Touch" );
 
         //Setting direction of motors.
         frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
