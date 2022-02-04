@@ -63,14 +63,14 @@ public class blueRightCarousel extends LinearOpMode {
 
             //turns on the carousel motor to get the duck onto the floor
             //spin while moving forward
-            carouselMotor(0.9, 1700);
+            carouselMotor(0.9, 1900);
 
             //turning on the crane motor making the crane go up and avoid the terrain
             crane.setPower(-0.5);
             sleep(500);
 
             //move toward warehouse
-            move(0.5, 1400);
+            move(0.75, 900);
 
             //turning to shipping hub
             gyroTurning(0);
@@ -85,7 +85,7 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(550);
 
             //move back from shipping hub
-            move(-0.5, 300);
+            move(-0.25, 200);
 
             //turning off crane motor when in the down position
             while (touch.isPressed() != true) {
@@ -98,33 +98,25 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(300);
             //tweak
 
-            move(.3, 770);
+            move(.3, 950);
             sleep(150);
 
             arm.setPosition(0);
             sleep(500);
 
             crane.setPower(1);
-            sleep(500);
+            sleep(1500);
 
-            gyroTurning(-20);
-            sleep(300);
+            gyroTurning(-30);
 
-            move(.25, 400);
+            move(.25, 500);
 
             arm.setPosition(1);
             sleep(300);
 
-            gyroTurning(90);
+            gyroTurning(110);
 
-            //frontLeft.setPower(-0.6);
-            //backLeft.setPower(-0.6);
-            //frontRight.setPower(0.6);
-            //backRight.setPower(0.6);
-            //sleep(650);
-            //stopMotors();
-
-            move(1, 1500);
+            move(1, 1600);
 
             // small reverse to stop.
             move (-0.5, 100);
