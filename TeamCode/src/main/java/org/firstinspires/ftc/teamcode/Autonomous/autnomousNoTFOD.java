@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
 
-import android.text.method.Touch;
+//TODO: Test Code
+
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -19,8 +20,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 @Autonomous
+@Disabled
 
-public class blueRightCarousel extends LinearOpMode {
+public class autnomousNoTFOD extends LinearOpMode {
 
     BNO055IMU imu;
     Orientation angles;
@@ -31,11 +33,10 @@ public class blueRightCarousel extends LinearOpMode {
     DcMotor backLeft;
     DcMotor backRight;
 
-    //hey
     DcMotor carousel;
     DcMotor crane;
     Servo arm;
-    TouchSensor touch;
+    TouchSensor Touch;
 
     public void runOpMode() {
         initDriveMotors();
@@ -63,14 +64,14 @@ public class blueRightCarousel extends LinearOpMode {
 
             //turns on the carousel motor to get the duck onto the floor
             //spin while moving forward
-            carouselMotor(0.9, 1900);
+            carouselMotor(0.9, 1700);
 
             //turning on the crane motor making the crane go up and avoid the terrain
             crane.setPower(-0.5);
             sleep(500);
 
             //move toward warehouse
-            move(0.75, 900);
+            move(0.5, 1400);
 
             //turning to shipping hub
             gyroTurning(0);
@@ -85,15 +86,13 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(550);
 
             //move back from shipping hub
-            move(-0.5, 200);
+            move(-0.5, 300);
+
 
             //turning off crane motor when in the down position
-//            while (touch.isPressed() != true) {
-//                crane.setPower(1);
-//            }
-//            crane.setPower(0);
-            crane.setPower(1);
-            sleep(500);
+            while (Touch.isPressed() != true) {
+                crane.setPower(1);
+            }
             crane.setPower(0);
 
             // turn 45
@@ -101,25 +100,33 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(300);
             //tweak
 
-            move(.3, 950);
+            move(.3, 770);
             sleep(150);
 
             arm.setPosition(0);
             sleep(500);
 
             crane.setPower(1);
-            sleep(1500);
+            sleep(500);
 
-            gyroTurning(-35);
+            gyroTurning(-20);
+            sleep(300);
 
-            move(.25, 500);
+            move(.25, 400);
 
             arm.setPosition(1);
             sleep(300);
 
-            gyroTurning(120);
+            gyroTurning(90);
 
-            move(1, 1600);
+            //frontLeft.setPower(-0.6);
+            //backLeft.setPower(-0.6);
+            //frontRight.setPower(0.6);
+            //backRight.setPower(0.6);
+            //sleep(650);
+            //stopMotors();
+
+            move(1, 1500);
 
             // small reverse to stop.
             move (-0.5, 100);
@@ -133,7 +140,7 @@ public class blueRightCarousel extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        touch = hardwareMap.get(TouchSensor.class, "Touch" );
+        Touch = hardwareMap.get(TouchSensor.class, "Touch" );
 
         //Setting direction of motors.
         frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);

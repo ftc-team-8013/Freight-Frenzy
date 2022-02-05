@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.ftcsecrets;
 import java.util.List;
 
 @Autonomous
+@Disabled
 
 public class blueLeftTFOD extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "";

@@ -9,12 +9,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @TeleOp
 @Disabled
 
-public class touchTesting extends LinearOpMode {
+public class oneController extends LinearOpMode {
 
     //Motor initialization
     private DcMotor frontLeft;
@@ -26,8 +25,6 @@ public class touchTesting extends LinearOpMode {
     private DcMotor crane;
     private Servo arm;
 
-    private TouchSensor Touch;
-
     public void runOpMode() {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
@@ -37,8 +34,6 @@ public class touchTesting extends LinearOpMode {
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
-
-        Touch = hardwareMap.get(TouchSensor.class, "Touch");
 
         //setting motor direction since some motors were backwards
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -50,27 +45,26 @@ public class touchTesting extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            telemetry.addData("Touch sensor: ", Touch.isPressed());
-            telemetry.update();
-/*
             //defining driving variables.
             double turn;
             double throttle;
             boolean strafeLeft;
             boolean strafeRight;
 
-            double cranePower;
+            boolean craneUp;
             boolean armToggle;
             double carouselPower;
+            boolean craneDown;
 
             throttle = gamepad1.left_stick_y;
             turn = gamepad1.right_stick_x;
             strafeLeft = gamepad1.left_bumper;
             strafeRight = gamepad1.right_bumper;
 
-            cranePower = gamepad2.left_stick_y;
-            armToggle = gamepad2.x;
-            carouselPower = gamepad2.left_trigger;
+            craneUp = gamepad1.dpad_up;
+            craneDown = gamepad1.dpad_down;
+            armToggle = gamepad1.x;
+            carouselPower = gamepad1.left_trigger;
 
             //making motors run.
             //strafing
@@ -97,7 +91,13 @@ public class touchTesting extends LinearOpMode {
             backLeft.setPower(-turn);
             backRight.setPower(turn);
 
-            crane.setPower(cranePower);
+            if (craneUp){
+                crane.setPower(0.5);
+            }else if (craneDown){
+                crane.setPower(-0.5);
+            }else{
+                crane.setPower(0);
+            }
 
             if (armToggle){
                 arm.setPosition(0);
@@ -106,9 +106,8 @@ public class touchTesting extends LinearOpMode {
             }
 
             carousel.setPower(carouselPower);
-            telemetry.addData("Elevator Trim", cranePower);
             System.out.println("servo position "+ arm.getPosition());
-            telemetry.update();*/
+            telemetry.update();
         }
     }
 }
