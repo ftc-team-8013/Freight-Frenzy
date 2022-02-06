@@ -85,7 +85,7 @@ public class chassisTest extends LinearOpMode {
             frontRight.setPower(turn);
             backLeft.setPower(-turn);
             backRight.setPower(turn);
-
+          
             crane.setPower(cranePower);
 
             if (armToggle){
@@ -94,6 +94,7 @@ public class chassisTest extends LinearOpMode {
                 arm.setPosition(1);
             }
             carousel.setPower(carouselPower);
+          
             telemetry.addData("Elevator Trim", cranePower);
             System.out.println("servo position "+ arm.getPosition());
             telemetry.update();
