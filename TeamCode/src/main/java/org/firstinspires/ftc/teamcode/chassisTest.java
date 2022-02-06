@@ -44,33 +44,35 @@ public class chassisTest extends LinearOpMode {
 
             //defining driving variables.
             double turn;
-            double strafeValue;
             double throttle;
+            boolean strafeLeft;
+            boolean strafeRight;
 
             double cranePower;
-            boolean armIn = false;
-            boolean armOut = false;
+            boolean armToggle;
+            double carouselPower;
 
             throttle = gamepad1.left_stick_y;
             turn = gamepad1.right_stick_x;
-            strafeValue = gamepad1.left_stick_x;
+            strafeLeft = gamepad1.left_bumper;
+            strafeRight = gamepad1.right_bumper;
 
             cranePower = gamepad2.left_stick_y;
-            armIn = gamepad2.dpad_right;
-            armOut = gamepad2.dpad_left;
+            armToggle = gamepad2.x;
+            carouselPower = gamepad2.left_trigger;
 
             //making motors run.
             //strafing
-            if (strafeValue < -0.1) {
-                frontLeft.setPower(-strafeValue);
-                frontRight.setPower(strafeValue);
-                backLeft.setPower(strafeValue);
-                backRight.setPower(-strafeValue);
-            } else if (strafeValue > 0.1) {
-                frontLeft.setPower(-strafeValue);
-                frontRight.setPower(strafeValue);
-                backLeft.setPower(strafeValue);
-                backRight.setPower(-strafeValue);
+            if (strafeLeft) {
+                frontLeft.setPower(-0.75);
+                frontRight.setPower(0.75);
+                backLeft.setPower(0.75);
+                backRight.setPower(-0.75);
+            } else if (strafeRight) {
+                frontLeft.setPower(-0.75);
+                frontRight.setPower(0.75);
+                backLeft.setPower(0.75);
+                backRight.setPower(-0.75);
             }
             //forward and backward movement
             frontLeft.setPower(throttle);
@@ -83,21 +85,16 @@ public class chassisTest extends LinearOpMode {
             frontRight.setPower(turn);
             backLeft.setPower(-turn);
             backRight.setPower(turn);
+          
+            crane.setPower(cranePower);
 
-            if (cranePower > 0.2 || cranePower < -0.2){
-                crane.setPower(cranePower);
+            if (armToggle){
+                arm.setPosition(0);
             }else{
-                crane.setPower(-0.1);
+                arm.setPosition(1);
             }
-
-            if (armIn) {
-                arm.setPosition(0.55);
-            } else if (armOut) {
-                arm.setPosition(0.18);
-            }
-
-            
-
+            carousel.setPower(carouselPower);
+          
             telemetry.addData("Elevator Trim", cranePower);
             System.out.println("servo position "+ arm.getPosition());
             telemetry.update();
