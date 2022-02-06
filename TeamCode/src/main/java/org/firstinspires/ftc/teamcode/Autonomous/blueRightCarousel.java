@@ -52,23 +52,16 @@ public class blueRightCarousel extends LinearOpMode {
             move(0.25, 500);
 
             //turning 90 degrees counterclockwise
-            //gyroTurning(90);
-
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(-0.5);
-            frontRight.setPower(0.5);
-           backRight.setPower(0.5);
-            sleep(680);
-            stopMotors();
+            gyroTurning(90);
 
             //reverse back into carousel
-            move(-0.4, 700);
+            move(-0.4, 1000);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
             //turns on the carousel motor to get the duck onto the floor
-            carouselMotor(.85, 4500);
+            carouselMotor(1, 2000);
             //changed power of moter from .5
 
             //turning on the crane motor making the crane go up and avoid the terrain
@@ -77,14 +70,14 @@ public class blueRightCarousel extends LinearOpMode {
 
 
             //moving to warehouse
-            move(0.5, 1550);
+            move(0.5, 1750);
 
             //turning to shipping hub
             gyroTurning(0);
             sleep(500);
 
             //move to delivery
-            move(0.25, 1280);
+            move(0.25, 1450);
             sleep(750);
 
             //open claw
@@ -92,46 +85,21 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(750);
 
             //move back from shipping hub
-            move(-0.5, 200);
+            move(-0.5, 500);
             //250 to 200
 
             // turn 90
             gyroTurning(90);
 
-            //fowerd
-            move(.5, 400);
-
-            //crane down
-            crane.setPower(.7);
-            sleep(2000);
-
-            //close claw
-            arm.setPosition(0);
-            sleep(400);
-
-            //crane up
-            crane.setPower(-.5);
-            sleep(1000);
-
-            //move back
-            move(-.5, 400 );
-
-            //turn back
-            gyroTurning(0);
-            sleep(500);
-
-            //claw open
-            arm.setPosition(1);
-            sleep(400);
-
-            //turn
-            gyroTurning(90);
-
             //move to warehouse
-            move(0.70, 2200);
+            move(1, 1750);
 
             //small reverse to stop.
             move (-0.5, 200);
+
+            crane.setPower(0.5);
+            sleep(500);
+            crane.setPower(0);
         }
     }
 
@@ -165,12 +133,14 @@ public class blueRightCarousel extends LinearOpMode {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+        sleep(250);
     }
 
     //Movement methods
     public boolean gyroTurning(double targetAngle) {
         boolean foundAngle = false;
-        while (opModeIsActive()) {
+        //while (opModeIsActive()) {
+        while (foundAngle == false) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double currentAngle = angles.firstAngle;
 
@@ -180,14 +150,14 @@ public class blueRightCarousel extends LinearOpMode {
                 backLeft.setPower(0);
                 backRight.setPower(0);
                 foundAngle = true;
-                sleep(1500);
+                sleep(1000);
                 break;
             } else if (angles.firstAngle >= targetAngle + 0.5) {
                 if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.15);
-                    frontRight.setPower(-0.15);
-                    backLeft.setPower(0.15);
-                    backRight.setPower(-0.15);
+                    frontLeft.setPower(0.3);
+                    frontRight.setPower(-0.3);
+                    backLeft.setPower(0.3);
+                    backRight.setPower(-0.3);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(0.5);
@@ -198,10 +168,10 @@ public class blueRightCarousel extends LinearOpMode {
                 }
             } else if (angles.firstAngle <= targetAngle - 0.5) {
                 if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.15);
-                    frontRight.setPower(0.15);
-                    backLeft.setPower(-0.15);
-                    backRight.setPower(0.15);
+                    frontLeft.setPower(-0.3);
+                    frontRight.setPower(0.3);
+                    backLeft.setPower(-0.3);
+                    backRight.setPower(0.3);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(-0.5);
