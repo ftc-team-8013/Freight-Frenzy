@@ -20,9 +20,10 @@ import org.firstinspires.ftc.teamcode.ftcsecrets;
 import java.util.List;
 
 @Autonomous
+@Disabled
 
 public class blueLeftTFOD extends LinearOpMode {
-    private static final String TFOD_MODEL_ASSET = "";
+    private static final String TFOD_MODEL_ASSET = "/sdcard/FIRST/tflitemodels/TSE(2-6-22).tflite";
     private static final String LABEL_LEFT = "left";
     private static final String LABEL_MIDDLE = "middle";
     private static final String LABEL_RIGHT = "right";

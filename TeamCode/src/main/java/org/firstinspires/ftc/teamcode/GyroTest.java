@@ -47,6 +47,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import java.util.Locale;
 
 @TeleOp
+@Disabled
+
 public class GyroTest extends LinearOpMode
 {
     BNO055IMU imu;
