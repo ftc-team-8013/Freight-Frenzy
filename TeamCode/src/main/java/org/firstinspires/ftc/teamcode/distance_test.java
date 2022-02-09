@@ -27,45 +27,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
-
+package org.firstinspires.ftc.teamcode;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-/*
- * This is an example LinearOpMode that shows how to use
- * a Modern Robotics Optical Distance Sensor
- * It assumes that the ODS sensor is configured with a name of "sensor_ods".
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-@TeleOp(name = "ODS", group = "Sensor")
-@Disabled
-public class SensorMROpticalDistance extends LinearOpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-  OpticalDistanceSensor odsSensor;  // Hardware Device Object
+@TeleOp(name = "Sensor: MR range sensor", group = "Sensor")
+public class distance_test extends LinearOpMode {
 
-  @Override
-  public void runOpMode() {
+    ModernRoboticsI2cRangeSensor rangeSensorM;
+    ModernRoboticsI2cRangeSensor rangeSensorR;
 
-    // get a reference to our Light Sensor object.
-    odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "sensor_ods");
+    @Override public void runOpMode() {
 
-    // wait for the start button to be pressed.
-    waitForStart();
+        // get a reference to our compass
+        rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
+        rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
+        // wait for the start button to be pressed
+        waitForStart();
 
-    // while the op mode is active, loop and read the light levels.
-    // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
-    while (opModeIsActive()) {
+        while (opModeIsActive()) {
+//            telemetry.addData("raw ultrasonic", rangeSensorM.rawUltrasonic());
+//            telemetry.addData("raw optical", rangeSensorM.rawOptical());
+//            telemetry.addData("cm optical", "%.2f cm", rangeSensorM.cmOptical());
+            telemetry.addData("cmm", "%.2f", rangeSensorM.getDistance(DistanceUnit.CM));
+            telemetry.update();
 
-      // send the info back to driver station using telemetry function.
-      telemetry.addData("Raw",    odsSensor.getRawLightDetected());
-      telemetry.addData("Normal", odsSensor.getLightDetected());
+            telemetry.addData("cmr", "%.2f", rangeSensorR.getDistance(DistanceUnit.CM));
 
-      telemetry.update();
+            if (rangeSensorM.getDistance(DistanceUnit.CM) >= 47 && rangeSensorM.getDistance(DistanceUnit.CM) <= 54) {
+                telemetry.addLine("Middle");
+            }else if (rangeSensorR.getDistance(DistanceUnit.CM) >= 47 && rangeSensorR.getDistance(DistanceUnit.CM) <= 60){
+                telemetry.addLine("Right");
+            }else {
+                telemetry.addLine("Left");
+            }
+        }
     }
-  }
 }

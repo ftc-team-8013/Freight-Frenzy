@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -34,6 +35,9 @@ public class blueRightCarousel extends LinearOpMode {
     DcMotor crane;
     Servo arm;
 
+    ModernRoboticsI2cRangeSensor rangeSensorM;
+    ModernRoboticsI2cRangeSensor rangeSensorR;
+
     public void runOpMode() {
         initDriveMotors();
         initMiscMotors();
@@ -46,10 +50,25 @@ public class blueRightCarousel extends LinearOpMode {
         if (opModeIsActive()) {
             //closing the arm and waiting so we know the block is in possession
             arm.setPosition(0);
-            sleep(500);
+            sleep(1000);
+
+            crane.setPower(-3);
+            sleep(100);
+            stopMotors();
 
             //move forwards a few inches
             move(0.25, 500);
+
+
+            double barcode1 = rangeSensorM.cmUltrasonic();
+            sleep(500);
+
+            gyroTurning(20);
+            double barcode2 = rangeSensorM.cmUltrasonic();
+            sleep(500);
+
+            telemetry.addData("cmM",rangeSensorM.cmUltrasonic());
+            telemetry.update();
 
             //turning 90 degrees counterclockwise
             gyroTurning(90);
@@ -65,9 +84,21 @@ public class blueRightCarousel extends LinearOpMode {
             //changed power of moter from .5
 
             //turning on the crane motor making the crane go up and avoid the terrain
-            crane.setPower(-0.5);
-            sleep(500);
-
+            if(barcode1 <= 60 && barcode1 >= 45){
+                crane.setPower(-0.5);
+                telemetry.addLine("middle");
+                telemetry.update();
+                sleep(500);
+            }else if (barcode2 <= 60 && barcode2 >= 45) {
+                crane.setPower(-0.5);
+                telemetry.addLine("left");
+                sleep(400);
+            }else{
+                crane.setPower(-0.5);
+                telemetry.addLine("Right");
+                telemetry.update();
+                sleep(300);
+            }
 
             //moving to warehouse
             move(0.5, 1750);
@@ -122,6 +153,9 @@ public class blueRightCarousel extends LinearOpMode {
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
+
+        rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
+        rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
     }
 
     public void initGyro() {
