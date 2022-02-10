@@ -54,10 +54,10 @@ public class distance_test extends LinearOpMode {
 //            telemetry.addData("raw ultrasonic", rangeSensorM.rawUltrasonic());
 //            telemetry.addData("raw optical", rangeSensorM.rawOptical());
 //            telemetry.addData("cm optical", "%.2f cm", rangeSensorM.cmOptical());
-            telemetry.addData("cmm", "%.2f", rangeSensorM.getDistance(DistanceUnit.CM));
+            telemetry.addData("cmm", rangeSensorM.cmUltrasonic());
             telemetry.update();
 
-            telemetry.addData("cmr", "%.2f", rangeSensorR.getDistance(DistanceUnit.CM));
+            //telemetry.addData("cmr", "%.2f", rangeSensorR.getDistance(DistanceUnit.CM));
 
             if (rangeSensorM.getDistance(DistanceUnit.CM) >= 47 && rangeSensorM.getDistance(DistanceUnit.CM) <= 54) {
                 telemetry.addLine("Middle");

@@ -38,19 +38,22 @@ public class blueRightCarousel extends LinearOpMode {
     ModernRoboticsI2cRangeSensor rangeSensorM;
     ModernRoboticsI2cRangeSensor rangeSensorR;
 
+
+
+
     public void runOpMode() {
         initDriveMotors();
         initMiscMotors();
         initGyro();
 
         waitForStart();
-        telemetry.addLine("cheers");
+        telemetry.addData("cm",rangeSensorM.cmUltrasonic());
         telemetry.update();
 
         if (opModeIsActive()) {
             //closing the arm and waiting so we know the block is in possession
             arm.setPosition(0);
-            sleep(1000);
+            sleep(1500);
 
             crane.setPower(-3);
             sleep(100);
@@ -59,15 +62,16 @@ public class blueRightCarousel extends LinearOpMode {
             //move forwards a few inches
             move(0.25, 500);
 
+            sleep(1000);
 
             double barcode1 = rangeSensorM.cmUltrasonic();
             sleep(500);
 
-            gyroTurning(20);
+            gyroTurning(15);
             double barcode2 = rangeSensorM.cmUltrasonic();
             sleep(500);
-
-            telemetry.addData("cmM",rangeSensorM.cmUltrasonic());
+            telemetry.addData("one",barcode1);
+            telemetry.addData("two",barcode2);
             telemetry.update();
 
             //turning 90 degrees counterclockwise
@@ -84,21 +88,22 @@ public class blueRightCarousel extends LinearOpMode {
             //changed power of moter from .5
 
             //turning on the crane motor making the crane go up and avoid the terrain
-            if(barcode1 <= 60 && barcode1 >= 45){
-                crane.setPower(-0.5);
-                telemetry.addLine("middle");
+            if(barcode1 <= 45 && barcode1 >= 30){
+                craneMotor(-5, 500);
+                telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
-            }else if (barcode2 <= 60 && barcode2 >= 45) {
-                crane.setPower(-0.5);
-                telemetry.addLine("left");
+            }else if (barcode2 <= 50 && barcode2 >= 30) {
+                craneMotor(-5,700);
+                telemetry.addLine("Middle");
                 sleep(400);
             }else{
-                crane.setPower(-0.5);
-                telemetry.addLine("Right");
+                craneMotor(-5,300);
+                telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
             }
+
 
             //moving to warehouse
             move(0.5, 1750);
@@ -118,6 +123,8 @@ public class blueRightCarousel extends LinearOpMode {
             //move back from shipping hub
             move(-0.5, 500);
             //250 to 200
+
+
 
             // turn 90
             gyroTurning(90);
@@ -260,4 +267,12 @@ public class blueRightCarousel extends LinearOpMode {
         sleep(time);
         carousel.setPower(0);
     }
+
+    public void craneMotor(double power, int time){
+        crane.setPower(power);
+        sleep(time);
+        crane.setPower(0);
+    }
+
+
 }
