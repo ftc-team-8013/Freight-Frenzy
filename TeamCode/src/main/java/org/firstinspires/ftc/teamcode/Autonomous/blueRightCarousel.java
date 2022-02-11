@@ -51,6 +51,10 @@ public class blueRightCarousel extends LinearOpMode {
         telemetry.update();
 
         if (opModeIsActive()) {
+
+            telemetry.addData("cm",rangeSensorM.cmUltrasonic());
+            telemetry.update();
+
             //closing the arm and waiting so we know the block is in possession
             arm.setPosition(0);
             sleep(1500);
@@ -62,12 +66,12 @@ public class blueRightCarousel extends LinearOpMode {
             //move forwards a few inches
             move(0.25, 500);
 
-            sleep(1000);
+            sleep(1500);
 
             double barcode1 = rangeSensorM.cmUltrasonic();
             sleep(500);
 
-            gyroTurning(15);
+            gyroTurning(10);
             double barcode2 = rangeSensorM.cmUltrasonic();
             sleep(500);
             telemetry.addData("one",barcode1);
@@ -82,7 +86,6 @@ public class blueRightCarousel extends LinearOpMode {
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
-
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1, 2000);
             //changed power of moter from .5
@@ -94,11 +97,12 @@ public class blueRightCarousel extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (barcode2 <= 50 && barcode2 >= 30) {
-                craneMotor(-5,700);
+                craneMotor(-5,800);
                 telemetry.addLine("Middle");
+                telemetry.update();
                 sleep(400);
             }else{
-                craneMotor(-5,300);
+                craneMotor(-5,1000);
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
