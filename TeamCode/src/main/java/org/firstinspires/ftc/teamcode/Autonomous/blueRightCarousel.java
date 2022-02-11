@@ -38,9 +38,6 @@ public class blueRightCarousel extends LinearOpMode {
     ModernRoboticsI2cRangeSensor rangeSensorM;
     ModernRoboticsI2cRangeSensor rangeSensorR;
 
-
-
-
     public void runOpMode() {
         initDriveMotors();
         initMiscMotors();
@@ -88,7 +85,7 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(500);
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1, 2000);
-            //changed power of moter from .5
+            //changed power of motor from .5
 
             //turning on the crane motor making the crane go up and avoid the terrain
             if(barcode1 <= 45 && barcode1 >= 30){
@@ -107,7 +104,6 @@ public class blueRightCarousel extends LinearOpMode {
                 telemetry.update();
                 sleep(300);
             }
-
 
             //moving to warehouse
             move(0.5, 1750);
