@@ -44,8 +44,7 @@ public class blueRightCarousel extends LinearOpMode {
         initGyro();
 
         waitForStart();
-        telemetry.addData("cm",rangeSensorM.cmUltrasonic());
-        telemetry.update();
+
 
         if (opModeIsActive()) {
 
@@ -66,11 +65,12 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(1500);
 
             double barcode1 = rangeSensorM.cmUltrasonic();
-            sleep(500);
+            sleep(400);
 
-            gyroTurning(10);
+            gyroTurning(12);
+            sleep(1000);
             double barcode2 = rangeSensorM.cmUltrasonic();
-            sleep(500);
+            sleep(400);
             telemetry.addData("one",barcode1);
             telemetry.addData("two",barcode2);
             telemetry.update();
@@ -79,7 +79,7 @@ public class blueRightCarousel extends LinearOpMode {
             gyroTurning(90);
 
             //reverse back into carousel
-            move(-0.4, 1000);
+            move(-0.3, 1000);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
@@ -89,7 +89,7 @@ public class blueRightCarousel extends LinearOpMode {
 
             //turning on the crane motor making the crane go up and avoid the terrain
             if(barcode1 <= 45 && barcode1 >= 30){
-                craneMotor(-5, 500);
+                craneMotor(.5, 1500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
@@ -129,15 +129,18 @@ public class blueRightCarousel extends LinearOpMode {
             // turn 90
             gyroTurning(90);
 
+            //if (rangeSensorM.cmUltrasonic() <=50) {
+                //telemetry.addLine("hi");
+                //telemetry.update();
+                //stopMotors();
+            //}
+            //else {
+                //move(1,1750);
+            //}
             //move to warehouse
             move(1, 1750);
 
-            //small reverse to stop.
-            move (-0.5, 200);
 
-            crane.setPower(0.5);
-            sleep(500);
-            crane.setPower(0);
         }
     }
 
