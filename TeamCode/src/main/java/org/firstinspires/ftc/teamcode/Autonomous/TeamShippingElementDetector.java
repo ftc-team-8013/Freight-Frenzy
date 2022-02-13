@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Rect;
 
-public class OpenCV extends OpenCvPipeline{
+public class TeamShippingElementDetector extends OpenCvPipeline{
     Telemetry telemetry;
     Mat mat = new Mat();
 
@@ -27,15 +27,15 @@ public class OpenCV extends OpenCvPipeline{
 
     static double percentThreshold = 0.4;
 
-    public OpenCV(Telemetry t){
+    public TeamShippingElementDetector(Telemetry t){
         telemetry = t;
     }
 
     @Override
     public Mat processFrame(Mat input){
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(30,75,75);
-        Scalar highHSV = new Scalar(36, 100, 100);
+        Scalar lowHSV = new Scalar(23,50,70);
+        Scalar highHSV = new Scalar(32, 255, 255);
 
         Core.inRange(mat, lowHSV, highHSV, mat);
 
@@ -61,9 +61,12 @@ public class OpenCV extends OpenCvPipeline{
 
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
-        Scalar tseColor = new Scalar(255,140,0);
+        Scalar tseColor = new Scalar(255,0,0);
 
         Imgproc.rectangle(mat, MID_ROI, tseColor);
         return mat;
+    }
+    public Location getLocation() {
+        return location;
     }
 }
