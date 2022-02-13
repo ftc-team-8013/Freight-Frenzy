@@ -9,8 +9,6 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Rect;
 
-import java.security.SecureClassLoader;
-
 public class OpenCV extends OpenCvPipeline{
     Telemetry telemetry;
     Mat mat = new Mat();
@@ -29,7 +27,7 @@ public class OpenCV extends OpenCvPipeline{
 
     static double percentThreshold = 0.4;
 
-    public void tseDetector(Telemetry t){
+    public OpenCV(Telemetry t){
         telemetry = t;
     }
 
