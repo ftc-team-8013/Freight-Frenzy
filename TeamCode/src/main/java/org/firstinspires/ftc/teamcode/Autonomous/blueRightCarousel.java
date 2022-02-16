@@ -83,7 +83,6 @@ public class blueRightCarousel extends LinearOpMode {
 
             //turning on the crane motor making the crane go up and avoid the terrain
             if(barcode1 <= 45 && barcode1 >= 30){
-                craneMotor(.5, 1500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
@@ -93,6 +92,7 @@ public class blueRightCarousel extends LinearOpMode {
                 telemetry.update();
                 sleep(400);
             }else{
+                craneMotor(.5, 1500);
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
