@@ -34,10 +34,16 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
     @Override
     public Mat processFrame(Mat input){
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(23,70,70);
-        Scalar highHSV = new Scalar(32, 255, 255);
 
-        Core.inRange(mat, lowHSV, highHSV, mat);
+        // Yellowish
+        Scalar yellowLowHSV = new Scalar(23,70,70);
+        Scalar yellowHighHSV = new Scalar(32, 255, 255);
+
+        // Orangish
+        Scalar orangeLowHSV = new Scalar(0, 59, 107);
+        Scalar orangeHighHSV = new Scalar(71, 183, 255);
+
+        Core.inRange(mat, orangeLowHSV, orangeHighHSV, mat);
 
         Mat mid = mat.submat(MID_ROI);
 
