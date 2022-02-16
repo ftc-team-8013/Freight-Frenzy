@@ -60,6 +60,7 @@ public class blueRightCarousel extends LinearOpMode {
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
+
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1, 2000);
             //changed power of moter from .5
