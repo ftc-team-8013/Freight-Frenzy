@@ -45,12 +45,7 @@ public class blueRightCarousel extends LinearOpMode {
 
         waitForStart();
 
-
         if (opModeIsActive()) {
-
-            telemetry.addData("cm",rangeSensorM.cmUltrasonic());
-            telemetry.update();
-
             //closing the arm and waiting so we know the block is in possession
             arm.setPosition(0);
             sleep(1500);
@@ -67,7 +62,7 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(400);
 
             gyroTurning(12);
-            sleep(1000);
+            sleep(3000);
             double barcode2 = rangeSensorM.cmUltrasonic();
             sleep(400);
             telemetry.addData("one",barcode1);
