@@ -21,11 +21,19 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
     }
     private Location location;
 
-    static final Rect MID_ROI = new Rect(
-        new Point(60, 35),
-        new Point(120, 75));
+    static final Rect LEFT_ROI = new Rect(
+            new Point(30, 10),
+            new Point(60, 150));
 
-    static double percentThreshold = 0.4;
+    static final Rect MID_ROI = new Rect(
+            new Point(140, 10),
+            new Point(170, 150));
+
+    static final Rect RIGHT_ROI = new Rect(
+            new Point(240, 10),
+            new Point(270, 150));
+
+    static double percentThreshold = 0.1;
 
     public TeamShippingElementDetector(Telemetry t){
         telemetry = t;
@@ -45,20 +53,32 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
 
         Core.inRange(mat, orangeLowHSV, orangeHighHSV, mat);
 
+        Mat left = mat.submat(LEFT_ROI);
         Mat mid = mat.submat(MID_ROI);
+        Mat right = mat.submat(RIGHT_ROI);
 
+        double leftValue = Core.sumElems(left).val[0] / LEFT_ROI.area() / 100;
         double midValue = Core.sumElems(mid).val[0] / MID_ROI.area() / 100;
+        double rightValue = Core.sumElems(right).val[0] / RIGHT_ROI.area() / 100;
 
         mid.release();
 
         telemetry.addData("raw Mid value", (int) Core.sumElems(mid).val[0]);
         telemetry.addData("Mid percentage", Math.round(midValue * 100) + "%");
 
+        boolean tseLeft = leftValue > percentThreshold;
         boolean tseMid = midValue > percentThreshold;
+        boolean tseRight = rightValue > percentThreshold;
 
-        if (tseMid){
+        if (tseLeft){
+            location = Location.LEFT;
+            telemetry.addData("Location", "Left");
+        }else if (tseMid){
             location = Location.MIDDLE;
             telemetry.addData("Location", "Middle");
+        }else if (tseRight) {
+            location = Location.RIGHT;
+            telemetry.addData("Location", "Right");
         }else{
             location = Location.NOT_FOUND;
             telemetry.addData("Location", "not found");
@@ -69,7 +89,9 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
 
         Scalar tseColor = new Scalar(255,0,0);
 
+        Imgproc.rectangle(mat, LEFT_ROI, tseColor);
         Imgproc.rectangle(mat, MID_ROI, tseColor);
+        Imgproc.rectangle(mat, RIGHT_ROI, tseColor);
         return mat;
     }
     public Location getLocation() {

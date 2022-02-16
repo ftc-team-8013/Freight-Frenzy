@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@TeleOp(name="Skystone Detecotor", group="Auto")
+@TeleOp(name="Freight Frenzy Detector", group="Auto")
 public class OpenCvTesting extends LinearOpMode {
     OpenCvWebcam webcam;
     @Override
