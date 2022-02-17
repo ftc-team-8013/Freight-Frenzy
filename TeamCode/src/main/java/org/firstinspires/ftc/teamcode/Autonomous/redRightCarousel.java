@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous
 
-public class blueRightCarousel extends LinearOpMode {
+public class redRightCarousel extends LinearOpMode {
 
     BNO055IMU imu;
     Orientation angles;
@@ -69,17 +69,26 @@ public class blueRightCarousel extends LinearOpMode {
             telemetry.addData("two",barcode2);
             telemetry.update();
 
-            //turning 90 degrees counterclockwise
-            gyroTurning(90);
+            //turning 90 degrees clockwise
+            gyroTurning(-90);
 
             //reverse back into carousel
-            move(-0.3, 1300);
+            move(-0.3, 1000);
+
+            //turn 45 degrees for wheel to touch carousel
+            gyroTurning(-45);
+
+            move(-.75, 400);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
+
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1, 2000);
-            //changed power of motor from .5
+
+            move(1,400);
+
+            gyroTurning(-90);
 
             //turning on the crane motor making the crane go up and avoid the terrain
             if(barcode1 <= 45 && barcode1 >= 30){
@@ -120,7 +129,7 @@ public class blueRightCarousel extends LinearOpMode {
 
 
             // turn 90
-            gyroTurning(90);
+            gyroTurning(-90);
 
             //if (rangeSensorM.cmUltrasonic() <=50) {
                 //telemetry.addLine("hi");
@@ -131,7 +140,9 @@ public class blueRightCarousel extends LinearOpMode {
                 //move(1,1750);
             //}
             //move to warehouse
-            move(1, 1750);
+            move(1, 1600);
+            //WHEELY
+            move(-1, 100);
 
 
         }
