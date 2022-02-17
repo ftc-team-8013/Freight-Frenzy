@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -13,6 +14,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -22,7 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class TeamShippingElementDetector extends OpenCvPipeline {
+     class TeamShippingElementDetector extends OpenCvPipeline /*LinearOpMode*/ {
     Telemetry telemetry;
     Mat mat = new Mat();
 
@@ -54,7 +56,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline {
         telemetry = t;
     }
 
-    @Override
+
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
 
@@ -113,109 +115,258 @@ public class TeamShippingElementDetector extends OpenCvPipeline {
     public Location getLocation() {
         return location;
     }
-    //if (opModeIsActive) {
-    //closing the arm and waiting so we know the block is in possession
-        arm.setPosition(0);
 
-    sleep(1500);
 
-        crane.setPower(-3);
+    BNO055IMU imu;
+    Orientation angles;
 
-    sleep(100);
+    //Init motors.
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
 
-    stopMotors();
+    DcMotor carousel;
+    DcMotor crane;
+    Servo arm;
+    ModernRoboticsI2cRangeSensor rangeSensorM;
 
-    //move forwards a few inches
-    move(0.25,500);
+    @Autonomous
 
-    sleep(1500);
+    public void runOpMode() {
+        initDriveMotors();
+        initMiscMotors();
+        initGyro();
 
-    double barcode1 = rangeSensorM.cmUltrasonic();
+        waitForStart();
 
-    sleep(400);
+        if (opModeIsActive()) {
+            //closing the arm and waiting so we know the block is in possession
+            arm.setPosition(0);
+            sleep(1500);
 
-    gyroTurning(12);
+            crane.setPower(-3);
+            sleep(100);
 
-    sleep(3000);
+            stopMotors();
 
-    double barcode2 = rangeSensorM.cmUltrasonic();
+            //move forwards a few inches
+            move(0.25, 500);
+            sleep(1500);
 
-    sleep(400);
-        telemetry.addData("one",barcode1);
-        telemetry.addData("two",barcode2);
-        telemetry.update();
+            double barcode1 = rangeSensorM.cmUltrasonic();
+            sleep(400);
 
-    //turning 90 degrees counterclockwise
-    gyroTurning(90);
+            gyroTurning(12);
+            sleep(3000);
 
-    //reverse back into carousel
-    move(-0.3,1300);
+            double barcode2 = rangeSensorM.cmUltrasonic();
+            sleep(400);
+            telemetry.addData("one", barcode1);
+            telemetry.addData("two", barcode2);
+            telemetry.update();
 
-    //basic sleeping to make sure we are turning the motors as soon as the robot stops
-    sleep(500);
+            //turning 90 degrees counterclockwise
+            gyroTurning(90);
 
-    //turns on the carousel motor to get the duck onto the floor
-    carouselMotor(1,2000);
-    //changed power of motor from .5
+            //reverse back into carousel
+            move(-0.3, 1300);
 
-    //turning on the crane motor making the crane go up and avoid the terrain
-    if(barcode1 <=45&&barcode1 >=30)
+            //basic sleeping to make sure we are turning the motors as soon as the robot stops
+            sleep(500);
 
-    {
-        telemetry.addLine("Right");
-        telemetry.update();
-        sleep(500);
-    }else if(barcode2 <=50&&barcode2 >=30)
+            //turns on the carousel motor to get the duck onto the floor
+            carouselMotor(1, 2000);
+            //changed power of motor from .5
 
-    {
-        craneMotor(-5, 900);
-        telemetry.addLine("Middle");
-        telemetry.update();
-        sleep(400);
-    }else
+            //turning on the crane motor making the crane go up and avoid the terrain
+            if (barcode1 <= 45 && barcode1 >= 30) {
+                telemetry.addLine("Right");
+                telemetry.update();
+                sleep(500);
+            } else if (barcode2 <= 50 && barcode2 >= 30) {
+                craneMotor(-5, 900);
+                telemetry.addLine("Middle");
+                telemetry.update();
+                sleep(400);
+            } else {
+                craneMotor(.5, 1500);
+                telemetry.addLine("Left");
+                telemetry.update();
+                sleep(300);
+            }
 
-    {
-        craneMotor(.5, 1500);
-        telemetry.addLine("Left");
-        telemetry.update();
-        sleep(300);
+            //moving to warehouse
+            move(0.5, 1680);
+
+            //turning to shipping hub
+            gyroTurning(0);
+
+            sleep(500);
+
+            //move to delivery
+            move(0.25, 1450);
+
+            sleep(750);
+
+            //open claw
+            arm.setPosition(1);
+
+            sleep(750);
+
+            //move back from shipping hub
+            move(-0.5, 500);
+            //250 to 200
+
+            // turn 90
+            gyroTurning(90);
+
+            //if (rangeSensorM.cmUltrasonic() <=50) {
+            //telemetry.addLine("hi");
+            //telemetry.update();
+            //stopMotors();
+            //}
+            //else {
+            //move(1,1750);
+            //}
+            //move to warehouse
+            move(1, 1750);
+
+        }
     }
 
-    //moving to warehouse
-    move(0.5,1680);
+    public void initDriveMotors() {
+        //Setting variables in code to a motor in the configuration.
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-    //turning to shipping hub
-    gyroTurning(0);
+        //Setting direction of motors.
+        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
 
-    sleep(500);
+    public void initMiscMotors() {
+        carousel = hardwareMap.get(DcMotor.class, "carousel");
+        crane = hardwareMap.get(DcMotor.class, "crane");
+        arm = hardwareMap.get(Servo.class, "arm");
+    }
 
-    //move to delivery
-    move(0.25,1450);
+    public void initGyro() {
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+        sleep(250);
+    }
 
-    sleep(750);
+    //Movement methods
+    public boolean gyroTurning(double targetAngle) {
+        boolean foundAngle = false;
+        //while (opModeIsActive()) {
+        while (foundAngle == false) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            double currentAngle = angles.firstAngle;
 
-    //open claw
-    arm.setPosition(1);
+            if (angles.firstAngle >= targetAngle - 0.1 && angles.firstAngle <= targetAngle + 0.1) {
+                frontLeft.setPower(0);
+                frontRight.setPower(0);
+                backLeft.setPower(0);
+                backRight.setPower(0);
+                foundAngle = true;
+                sleep(1000);
+                break;
+            } else if (angles.firstAngle >= targetAngle + 0.5) {
+                if (angles.firstAngle <= targetAngle + 10) {
+                    frontLeft.setPower(0.3);
+                    frontRight.setPower(-0.3);
+                    backLeft.setPower(0.3);
+                    backRight.setPower(-0.3);
+                    foundAngle = false;
+                } else {
+                    frontLeft.setPower(0.5);
+                    frontRight.setPower(-0.5);
+                    backLeft.setPower(0.5);
+                    backRight.setPower(-0.5);
+                    foundAngle = false;
+                }
+            } else if (angles.firstAngle <= targetAngle - 0.5) {
+                if (angles.firstAngle >= targetAngle - 10) {
+                    frontLeft.setPower(-0.3);
+                    frontRight.setPower(0.3);
+                    backLeft.setPower(-0.3);
+                    backRight.setPower(0.3);
+                    foundAngle = false;
+                } else {
+                    frontLeft.setPower(-0.5);
+                    frontRight.setPower(0.5);
+                    backLeft.setPower(-0.5);
+                    backRight.setPower(0.5);
+                    foundAngle = false;
+                }
+            }
+        }
+        return foundAngle;
+    }
 
-    sleep(750);
 
-    //move back from shipping hub
-    move(-0.5,500);
-    //250 to 200
+    public void stopMotors(){
+        frontLeft.setPower(0);
+        frontRight.setPower(0);
+        backLeft.setPower(0);
+        backRight.setPower(0);
+    }
 
-    // turn 90
-    gyroTurning(90);
+    public void move(double power, int time){
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        sleep(time);
+        stopMotors();
+    }
 
-    //if (rangeSensorM.cmUltrasonic() <=50) {
-    //telemetry.addLine("hi");
-    //telemetry.update();
-    //stopMotors();
-    //}
-    //else {
-    //move(1,1750);
-    //}
-    //move to warehouse
-    move(1,1750);
+    public void strafeLeft(double power, int time){
+        frontLeft.setPower(-power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(-power);
+        sleep(time);
+        stopMotors();
+    }
+
+    public void strafeRight(double power, int time){
+        frontLeft.setPower(power);
+        frontRight.setPower(-power);
+        backLeft.setPower(-power);
+        backRight.setPower(power);
+        sleep(time);
+        stopMotors();
+    }
+
+    //Other methods
+    public void carouselMotor(double power, int time){
+        carousel.setPower(power);
+        sleep(time);
+        carousel.setPower(0);
+    }
+
+
+    public void craneMotor(double power, int time){
+       crane.setPower(power);
+       sleep(time);
+       crane.setPower(0);
+    }
+
+
+
 
 
 
