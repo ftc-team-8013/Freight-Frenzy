@@ -64,15 +64,15 @@ public class chassisTest extends LinearOpMode {
             //making motors run.
             //strafing
             if (strafeLeft) {
-                frontLeft.setPower(-0.75);
-                frontRight.setPower(0.75);
-                backLeft.setPower(0.75);
-                backRight.setPower(-0.75);
+                frontLeft.setPower(1);
+                frontRight.setPower(-1);
+                backLeft.setPower(-1);
+                backRight.setPower(1);
             } else if (strafeRight) {
-                frontLeft.setPower(-0.75);
-                frontRight.setPower(0.75);
-                backLeft.setPower(0.75);
-                backRight.setPower(-0.75);
+                frontLeft.setPower(-1);
+                frontRight.setPower(1);
+                backLeft.setPower(1);
+                backRight.setPower(-1);
             }
             //forward and backward movement
             frontLeft.setPower(throttle);

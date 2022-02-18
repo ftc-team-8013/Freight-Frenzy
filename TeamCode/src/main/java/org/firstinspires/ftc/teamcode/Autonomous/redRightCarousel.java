@@ -69,24 +69,19 @@ public class redRightCarousel extends LinearOpMode {
             telemetry.addData("two",barcode2);
             telemetry.update();
 
-            //turning 90 degrees clockwise
-            gyroTurning(-90);
+            move(.5, 350);
 
-            //reverse back into carousel
-            move(-0.3, 1000);
+            //turing forward to make strafing easier
+            gyroTurning(0);
 
-            //turn 45 degrees for wheel to touch carousel
-            gyroTurning(-45);
-
-            move(-.75, 400);
+            //strafing into the carousel
+            strafeLeft(.75, 1900);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
             //turns on the carousel motor to get the duck onto the floor
-            carouselMotor(1, 2000);
-
-            move(1,400);
+            carouselMotor(-1, 2000);
 
             gyroTurning(-90);
 
@@ -108,14 +103,14 @@ public class redRightCarousel extends LinearOpMode {
             }
 
             //moving to warehouse
-            move(0.5, 1680);
+            move(0.5, 1750);
 
             //turning to shipping hub
             gyroTurning(0);
             sleep(500);
 
             //move to delivery
-            move(0.25, 1450);
+            move(0.5, 800);
             sleep(750);
 
             //open claw
@@ -123,12 +118,11 @@ public class redRightCarousel extends LinearOpMode {
             sleep(750);
 
             //move back from shipping hub
-            move(-0.5, 500);
-            //250 to 200
+            move(-0.5, 700);
 
+            sleep(300);
 
-
-            // turn 90
+            // turn -90
             gyroTurning(-90);
 
             //if (rangeSensorM.cmUltrasonic() <=50) {
@@ -141,8 +135,7 @@ public class redRightCarousel extends LinearOpMode {
             //}
             //move to warehouse
             move(1, 1600);
-            //WHEELY
-            move(-1, 100);
+
 
 
         }
