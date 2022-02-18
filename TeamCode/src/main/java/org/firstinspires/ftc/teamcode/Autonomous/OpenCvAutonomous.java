@@ -128,7 +128,7 @@ public class OpenCvAutonomous extends LinearOpMode {
                 telemetry.update();
                 sleep(300);
             }
-            else {
+            else if(locationOfTSE == "not Found"){
 
                 sleep(400);
                 telemetry.addData("one",barcode1);
