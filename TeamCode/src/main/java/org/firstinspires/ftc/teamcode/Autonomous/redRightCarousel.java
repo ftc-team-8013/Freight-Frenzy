@@ -61,21 +61,23 @@ public class redRightCarousel extends LinearOpMode {
             double barcode1 = rangeSensorM.cmUltrasonic();
             sleep(400);
 
-            gyroTurning(12);
-            sleep(3000);
+            gyroTurning(24);
+
             double barcode2 = rangeSensorM.cmUltrasonic();
             sleep(400);
             telemetry.addData("one",barcode1);
             telemetry.addData("two",barcode2);
             telemetry.update();
 
-            move(.5, 350);
+            move(.5, 400);
 
             //turing forward to make strafing easier
             gyroTurning(0);
 
             //strafing into the carousel
             strafeLeft(.75, 1900);
+
+            move(0.1, 100);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
@@ -92,7 +94,7 @@ public class redRightCarousel extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (barcode2 <= 50 && barcode2 >= 30) {
-                craneMotor(-5,900);
+                craneMotor(.5,900);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(400);
@@ -125,16 +127,8 @@ public class redRightCarousel extends LinearOpMode {
             // turn -90
             gyroTurning(-90);
 
-            //if (rangeSensorM.cmUltrasonic() <=50) {
-                //telemetry.addLine("hi");
-                //telemetry.update();
-                //stopMotors();
-            //}
-            //else {
-                //move(1,1750);
-            //}
             //move to warehouse
-            move(1, 1600);
+            move(1, 1800);
 
 
 
