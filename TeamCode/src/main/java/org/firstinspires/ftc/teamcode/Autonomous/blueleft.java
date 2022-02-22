@@ -1,36 +1,37 @@
-
-//TODO: Test Code
-
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import android.graphics.Path;
+//IMPORTS
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous
+@Autonomous(name="blueleft", group="Auto")
+public class blueleft extends LinearOpMode {
+    OpenCvWebcam webcam;
 
-public class blueRightCarousel extends LinearOpMode {
-
+    //defining varibles
     BNO055IMU imu;
     Orientation angles;
-
-    //Init motors.
     DcMotor frontLeft;
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
-    DcMotor redcarousel;
 
     DcMotor carousel;
     DcMotor crane;
@@ -39,104 +40,160 @@ public class blueRightCarousel extends LinearOpMode {
     ModernRoboticsI2cRangeSensor rangeSensorM;
     ModernRoboticsI2cRangeSensor rangeSensorR;
 
-    public void runOpMode() {
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        //init motors
         initDriveMotors();
         initMiscMotors();
         initGyro();
 
+        //refrence TeamShippingElementDector
+        int cameraMonitorViewId = hardwareMap.appContext
+                .getResources().getIdentifier("cameraMonitorViewId",
+                        "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        TeamShippingElementDetector detector = new TeamShippingElementDetector(telemetry);
+        webcam.setPipeline(detector);
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+
+            }
+        });
+
         waitForStart();
 
+        //Starting values for varibles
+        String locationOfTSE = "none";
+        double barcode1 = 0;
+        double barcode2 = 0;
+
         if (opModeIsActive()) {
-            //closing the arm and waiting so we know the block is in possession
+            //close claw
             arm.setPosition(0);
             sleep(1500);
-
-            crane.setPower(-3);
-            sleep(100);
-            stopMotors();
-
-            //move forwards a few inches
-            move(0.25, 500);
-            sleep(1500);
-
-            double barcode1 = rangeSensorM.cmUltrasonic();
-            sleep(400);
-
-            gyroTurning(12);
+            //crane up out of the way
+            crane.setPower(-1);
             sleep(3000);
-            double barcode2 = rangeSensorM.cmUltrasonic();
-            sleep(400);
-            telemetry.addData("one",barcode1);
-            telemetry.addData("two",barcode2);
-            telemetry.update();
 
-            //turning 90 degrees counterclockwise
-            gyroTurning(90);
+            //determineing where the tse is
+            switch (detector.getLocation()) {
+                case LEFT:
+                    locationOfTSE = "left";
+                    break;
+                case MIDDLE:
+                    locationOfTSE = "middle";
+                    break;
+                case RIGHT:
+                    locationOfTSE = "right";
+                    break;
+                case NOT_FOUND:
+                    locationOfTSE = "not Found";
+                    //if not found use gyro
+                    move(0.25, 500);
+                    sleep(1500);
 
-            //reverse back into carousel
-            move(-0.3, 1300);
+                    barcode1 = rangeSensorM.cmUltrasonic();
+                    sleep(400);
 
-            //basic sleeping to make sure we are turning the motors as soon as the robot stops
-            sleep(500);
-          
-            //turns on the carousel motor to get the duck onto the floor
-            carouselMotor(1, 2000);
-            //changed power of motor from .5
+                    gyroTurning(12);
+                    sleep(3000);
+                    barcode2 = rangeSensorM.cmUltrasonic();
+                    break;
+            }
 
-            //turning on the crane motor making the crane go up and avoid the terrain
-            if(barcode1 <= 45 && barcode1 >= 30){
-                craneMotor(.5, 1500);
+
+            //moveing crane to right position
+            if(locationOfTSE == "right"){
+                move(.25, 500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
-            }else if (barcode2 <= 50 && barcode2 >= 30) {
-                craneMotor(-5,900);
+            }else if (locationOfTSE == "middle") {
+                craneMotor(.5,900);
+                move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
-                sleep(400);
-            }else{
+                sleep(500);
+            }else if (locationOfTSE == "left"){
+                craneMotor(.5, 1600);
+                move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
             }
+            else if(locationOfTSE == "not Found"){
 
-            //moving to warehouse
-            move(0.5, 1680);
+                sleep(400);
+                telemetry.addData("one",barcode1);
+                telemetry.addData("two",barcode2);
+                telemetry.update();
 
-            //turning to shipping hub
-            gyroTurning(0);
+                //for distance
+                if(barcode1 <= 45 && barcode1 >= 30){
+                    telemetry.addLine("Right");
+                    telemetry.update();
+                    sleep(500);
+                }else if (barcode2 <= 50 && barcode2 >= 30) {
+                    craneMotor(-5,1000);
+                    telemetry.addLine("Middle");
+                    telemetry.update();
+                    sleep(400);
+                }else{
+                    craneMotor(.5, 1500);
+                    telemetry.addLine("Left");
+                    telemetry.update();
+                    sleep(300);
+                }
+            }
+
+
+
+            strafeRight(1, 750);
+
             sleep(500);
 
-            //move to delivery
-            move(0.25, 1450);
-            sleep(750);
+            //forward
+            move(.4,500);
 
-            //open claw
+
+            //basic sleeping to make sure we are turning the motors as soon as the robot stops
+            sleep(500);
+
+            //open arm
             arm.setPosition(1);
-            sleep(750);
-
-            //move back from shipping hub
-            move(-0.5, 500);
-            //250 to 200
+            sleep(500);
 
 
+            //turn to wall
+            gyroTurning(179);
 
-            // turn 90
-            gyroTurning(90);
+            sleep(500);
 
-            //if (rangeSensorM.cmUltrasonic() <=50) {
-            //telemetry.addLine("hi");
-            //telemetry.update();
-            //stopMotors();
-            //}
-            //else {
-            //move(1,1750);
-            //}
+            //back up to wall
+            move(.5,700);
+
+            sleep(500);
+
+            //turn to warehouse
+            gyroTurning(-90);
+
+            sleep(500);
+
             //move to warehouse
-            move(1, 1750);
+            move(-1, 1000);
+
 
         }
+        webcam.stopStreaming();
     }
+
 
     //Init methods
     public void initDriveMotors() {
@@ -154,7 +211,6 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
     public void initMiscMotors() {
-        redcarousel = hardwareMap.get(DcMotor.class, "redcarousel");
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
@@ -271,11 +327,6 @@ public class blueRightCarousel extends LinearOpMode {
         sleep(time);
         crane.setPower(0);
     }
-
-    public void redcarouselMotor(double power, int time){
-        redcarousel.setPower(power);
-        sleep(time);
-        redcarousel.setPower(0);
-    }
-
 }
+
+

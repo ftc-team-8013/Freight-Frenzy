@@ -21,7 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name="Freight Frenzy Detector", group="Auto")
+@Autonomous(name="blueright", group="Auto")
 public class OpenCvAutonomous extends LinearOpMode {
     OpenCvWebcam webcam;
 
@@ -116,7 +116,7 @@ public class OpenCvAutonomous extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
-                craneMotor(.5,700);
+                craneMotor(.5,900);
                 move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
@@ -141,7 +141,7 @@ public class OpenCvAutonomous extends LinearOpMode {
                     telemetry.update();
                     sleep(500);
                 }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    craneMotor(-5,900);
+                    craneMotor(.5,900);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
