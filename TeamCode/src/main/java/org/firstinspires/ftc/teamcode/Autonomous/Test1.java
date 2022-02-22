@@ -4,12 +4,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.opencv.core.Rect;
 
-public class TeamShippingElementDetector extends OpenCvPipeline{
+public class Test1 extends OpenCvPipeline{
     Telemetry telemetry;
     Mat mat = new Mat();
 
@@ -35,7 +35,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
 
     static double percentThreshold = 0.05;
 
-    public TeamShippingElementDetector(Telemetry t){
+    public Test1(Telemetry t){
         telemetry = t;
     }
 
@@ -55,11 +55,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
         Scalar whiteLowHSV = new Scalar(50,50,50);
         Scalar whiteHighHSV = new Scalar(255,255,255);
 
-        //green
-        Scalar greenLowHSV = new Scalar(40,40,40);
-        Scalar greenHighHSV = new Scalar(70,255,255);
-
-        Core.inRange(mat, greenLowHSV, greenHighHSV, mat);
+        Core.inRange(mat, whiteLowHSV, whiteHighHSV, mat);
 
         Mat left = mat.submat(LEFT_ROI);
         Mat mid = mat.submat(MID_ROI);
