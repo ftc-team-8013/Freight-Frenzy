@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-    @Autonomous(name="Freight Frenzy Detector", group="Auto")
+    @Autonomous(name="redright", group="Auto")
     public class redRightCarousel extends LinearOpMode {
         OpenCvWebcam webcam;
 
