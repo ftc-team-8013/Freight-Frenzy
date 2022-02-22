@@ -18,6 +18,7 @@ public class chassisTest extends LinearOpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    private DcMotor redcarousel;
     private DcMotor carousel;
     private DcMotor crane;
     private Servo arm;
@@ -28,6 +29,7 @@ public class chassisTest extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
+        redcarousel = hardwareMap.get(DcMotor.class, "redcarousel");
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
@@ -85,7 +87,7 @@ public class chassisTest extends LinearOpMode {
             frontRight.setPower(turn);
             backLeft.setPower(-turn);
             backRight.setPower(turn);
-
+          
             crane.setPower(cranePower);
 
             if (armToggle){
@@ -94,6 +96,7 @@ public class chassisTest extends LinearOpMode {
                 arm.setPosition(1);
             }
             carousel.setPower(carouselPower);
+          
             telemetry.addData("Elevator Trim", cranePower);
             System.out.println("servo position "+ arm.getPosition());
             telemetry.update();
