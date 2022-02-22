@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name="blueright", group="Auto")
-public class OpenCvAutonomous extends LinearOpMode {
+public class blueright extends LinearOpMode {
     OpenCvWebcam webcam;
 
     //defining varibles
@@ -116,13 +116,17 @@ public class OpenCvAutonomous extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
-                craneMotor(.5,900);
+                crane.setTargetPosition(-463);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "left"){
-                craneMotor(.5, 1600);
+                crane.setTargetPosition(-213);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
@@ -141,12 +145,16 @@ public class OpenCvAutonomous extends LinearOpMode {
                     telemetry.update();
                     sleep(500);
                 }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    craneMotor(.5,900);
+                    crane.setTargetPosition(-463);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
                 }else{
-                    craneMotor(.5, 1500);
+                    crane.setTargetPosition(-213);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
