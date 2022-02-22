@@ -72,12 +72,9 @@ public class redRightCarousel extends LinearOpMode {
             move(.5, 400);
 
             //turing forward to make strafing easier
-            gyroTurning(0);
+            gyroTurning(-90);
 
-            //strafing into the carousel
-            strafeLeft(.75, 1900);
-
-            move(0.1, 100);
+            move(0.5, 1500);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);

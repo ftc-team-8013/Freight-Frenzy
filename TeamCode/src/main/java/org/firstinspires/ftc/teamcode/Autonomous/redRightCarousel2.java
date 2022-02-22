@@ -1,17 +1,16 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 
-import android.graphics.Path;
 //IMPORTS
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -22,7 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-    @Autonomous(name="Freight Frenzy Detector", group="Auto")
+    @Autonomous(name="Red left", group="Auto")
     public class redRightCarousel2 extends LinearOpMode {
         OpenCvWebcam webcam;
 
@@ -35,6 +34,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
         DcMotor backRight;
 
         DcMotor carousel;
+        DcMotor redCarousel;
         DcMotor crane;
         Servo arm;
 
@@ -74,15 +74,21 @@ import org.openftc.easyopencv.OpenCvWebcam;
             double barcode1 = 0;
             double barcode2 = 0;
 
+            crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
             if (opModeIsActive()) {
                 //close claw
                 arm.setPosition(0);
                 sleep(1500);
                 //crane up out of the way
+
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setTargetPosition(1000);
                 crane.setPower(-1);
                 sleep(3000);
 
                 //determineing where the tse is
+                //using opencv to get the location
                 switch (detector.getLocation()) {
                     case LEFT:
                         locationOfTSE = "left";
@@ -117,7 +123,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                     telemetry.update();
                     sleep(500);
                 }else if (locationOfTSE == "middle") {
-                    craneMotor(.5,700);
+                    craneMotor(.5,200);
                     move(.25, 500);
                     telemetry.addLine("Middle");
                     telemetry.update();
@@ -130,6 +136,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                     sleep(300);
                 }
                 else if(locationOfTSE == "not Found"){
+                    //code to use distance sensor if opencv fails.
 
                     sleep(400);
                     telemetry.addData("one",barcode1);
@@ -153,22 +160,17 @@ import org.openftc.easyopencv.OpenCvWebcam;
                         sleep(300);
                     }
                 }
-                //turning 90 degrees counterclockwise to carousel
-                //gyroTurning(90);
-
-                strafeLeft(.75,1900);
+                //turning -90 degrees counterclockwise to carousel
+                gyroTurning(-90);
 
                 //reverse back into carousel
-                move(0.1, 100);
+                move(-0.4, 1300);
 
                 //basic sleeping to make sure we are turning the motors as soon as the robot stops
                 sleep(500);
 
                 //turns on the carousel motor to get the duck onto the floor
-                carouselMotor(-1, 2000);
-
-                gyroTurning(-90);
-
+                redCarouselMotor(-1, 2000);
 
                 //moving to warehouse
                 move(0.5, 1750);
@@ -215,6 +217,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
             carousel = hardwareMap.get(DcMotor.class, "carousel");
             crane = hardwareMap.get(DcMotor.class, "crane");
             arm = hardwareMap.get(Servo.class, "arm");
+            redCarousel = hardwareMap.get(DcMotor.class, "redcarousel");
 
             rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
             rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
@@ -322,6 +325,11 @@ import org.openftc.easyopencv.OpenCvWebcam;
             sleep(time);
             carousel.setPower(0);
         }
+         public void redCarouselMotor(double power, int time){
+            redCarousel.setPower(power);
+            sleep(time);
+            redCarousel.setPower(0);
+         }
 
         public void craneMotor(double power, int time){
             crane.setPower(power);
