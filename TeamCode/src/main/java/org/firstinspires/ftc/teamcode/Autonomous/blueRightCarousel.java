@@ -29,6 +29,7 @@ public class blueRightCarousel extends LinearOpMode {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
+    DcMotor redcarousel;
 
     DcMotor carousel;
     DcMotor crane;
@@ -120,6 +121,7 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
     public void initMiscMotors() {
+        redcarousel = hardwareMap.get(DcMotor.class, "redcarousel");
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
@@ -226,5 +228,11 @@ public class blueRightCarousel extends LinearOpMode {
         carousel.setPower(power);
         sleep(time);
         carousel.setPower(0);
+    }
+
+    public void redcarouselMotor(double power, int time){
+        redcarousel.setPower(power);
+        sleep(time);
+        redcarousel.setPower(0);
     }
 }
