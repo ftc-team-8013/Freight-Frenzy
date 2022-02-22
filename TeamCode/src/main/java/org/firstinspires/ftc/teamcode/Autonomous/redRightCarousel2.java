@@ -79,6 +79,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 arm.setPosition(0);
                 sleep(1500);
                 //crane up out of the way
+                //-800
+                crane.setTargetPosition(-786);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 crane.setPower(-1);
                 sleep(3000);
 
@@ -117,12 +120,16 @@ import org.openftc.easyopencv.OpenCvWebcam;
                     telemetry.update();
                     sleep(500);
                 }else if (locationOfTSE == "middle") {
-                    craneMotor(.5,700);
+                    //-463
+                    crane.setTargetPosition(-463);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(0.5);
                     move(.25, 500);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(500);
                 }else if (locationOfTSE == "left"){
+                    //-214
                     craneMotor(.5, 1600);
                     move(.25, 500);
                     telemetry.addLine("Left");
@@ -215,6 +222,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
             carousel = hardwareMap.get(DcMotor.class, "carousel");
             crane = hardwareMap.get(DcMotor.class, "crane");
             arm = hardwareMap.get(Servo.class, "arm");
+
+            crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
             rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
