@@ -66,8 +66,8 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(3000);
             double barcode2 = rangeSensorM.cmUltrasonic();
             sleep(400);
-            telemetry.addData("one",barcode1);
-            telemetry.addData("two",barcode2);
+            telemetry.addData("one", barcode1);
+            telemetry.addData("two", barcode2);
             telemetry.update();
 
             //turning 90 degrees counterclockwise
@@ -78,23 +78,23 @@ public class blueRightCarousel extends LinearOpMode {
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
-          
+
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1, 2000);
             //changed power of motor from .5
 
             //turning on the crane motor making the crane go up and avoid the terrain
-            if(barcode1 <= 45 && barcode1 >= 30){
+            if (barcode1 <= 45 && barcode1 >= 30) {
                 craneMotor(.5, 1500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
-            }else if (barcode2 <= 50 && barcode2 >= 30) {
-                craneMotor(-5,900);
+            } else if (barcode2 <= 50 && barcode2 >= 30) {
+                craneMotor(-5, 900);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(400);
-            }else{
+            } else {
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
@@ -118,7 +118,6 @@ public class blueRightCarousel extends LinearOpMode {
             //move back from shipping hub
             move(-0.5, 500);
             //250 to 200
-
 
 
             // turn 90
@@ -225,14 +224,14 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
 
-    public void stopMotors(){
+    public void stopMotors() {
         frontLeft.setPower(0);
         frontRight.setPower(0);
         backLeft.setPower(0);
         backRight.setPower(0);
     }
 
-    public void move(double power, int time){
+    public void move(double power, int time) {
         frontLeft.setPower(power);
         frontRight.setPower(power);
         backLeft.setPower(power);
@@ -241,7 +240,7 @@ public class blueRightCarousel extends LinearOpMode {
         stopMotors();
     }
 
-    public void strafeLeft(double power, int time){
+    public void strafeLeft(double power, int time) {
         frontLeft.setPower(-power);
         frontRight.setPower(power);
         backLeft.setPower(power);
@@ -250,7 +249,7 @@ public class blueRightCarousel extends LinearOpMode {
         stopMotors();
     }
 
-    public void strafeRight(double power, int time){
+    public void strafeRight(double power, int time) {
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         backLeft.setPower(-power);
@@ -260,23 +259,23 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
     //Other methods
-    public void carouselMotor(double power, int time){
+    public void carouselMotor(double power, int time) {
         carousel.setPower(power);
         sleep(time);
         carousel.setPower(0);
     }
 
-    public void craneMotor(double power, int time){
+    public void craneMotor(double power, int time) {
         crane.setPower(power);
         sleep(time);
         crane.setPower(0);
     }
 
 
-}
-    public void redcarouselMotor(double power, int time){
+    public void redcarouselMotor(double power, int time) {
         redcarousel.setPower(power);
         sleep(time);
         redcarousel.setPower(0);
     }
 }
+
