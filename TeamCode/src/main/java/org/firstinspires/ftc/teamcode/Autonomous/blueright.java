@@ -135,6 +135,7 @@ public class blueright extends LinearOpMode {
             else if(locationOfTSE == "not Found"){
 
                 sleep(400);
+                telemetry.clearAll();
                 telemetry.addData("one",barcode1);
                 telemetry.addData("two",barcode2);
                 telemetry.update();
