@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-    @Autonomous(name="redright", group="Auto")
+    @Autonomous(name="redleft", group="Auto")
     public class redRightCarousel extends LinearOpMode {
         OpenCvWebcam webcam;
 
