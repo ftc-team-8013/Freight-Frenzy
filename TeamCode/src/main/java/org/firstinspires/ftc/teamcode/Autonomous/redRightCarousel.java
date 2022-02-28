@@ -80,7 +80,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 sleep(1500);
                 //crane up out of the way
                 //-800
-                crane.setTargetPosition(-786);
+                crane.setTargetPosition(-800);
                 crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 crane.setPower(-1);
                 sleep(3000);
@@ -121,7 +121,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                     sleep(500);
                 }else if (locationOfTSE == "middle") {
                     //-463
-                    crane.setTargetPosition(-463);
+                    crane.setTargetPosition(-500);
                     crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     crane.setPower(0.5);
                     move(.25, 500);
@@ -130,7 +130,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                     sleep(500);
                 }else if (locationOfTSE == "left"){
                     //-214
-                    crane.setTargetPosition(-214);
+                    crane.setTargetPosition(-250);
                     crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     crane.setPower(.5);
                     move(.25, 500);
