@@ -35,6 +35,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
         DcMotor backRight;
 
         DcMotor carousel;
+        DcMotor redRightCarousel;
         DcMotor crane;
         Servo arm;
 
@@ -113,7 +114,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 }
 
 
-                //moveing crane to right position
+                //moving crane to right position
                 if(locationOfTSE == "right"){
                     move(.25, 500);
                     telemetry.addLine("Right");
@@ -169,31 +170,29 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
                 }
                 //turning 90 degrees counterclockwise to carousel
-                //gyroTurning(90);
-
-                strafeLeft(.75,1900);
+                gyroTurning(-90);
 
                 //reverse back into carousel
-                move(0.1, 100);
+                move(-.3, 600);
+                gyroTurning(-90);
 
+                //reverse back into carousel
+                move(-.3, 1200);
                 //basic sleeping to make sure we are turning the motors as soon as the robot stops
                 sleep(500);
 
                 //turns on the carousel motor to get the duck onto the floor
-                carouselMotor(-1, 2000);
-
-                gyroTurning(-90);
-
+                Redcarousel(-1,2000);
 
                 //moving to warehouse
-                move(0.5, 1750);
+                move(0.5, 1650);
 
                 //turning to shipping hub
                 gyroTurning(0);
                 sleep(500);
 
                 //move to delivery
-                move(0.25, 1300);
+                move(0.25, 1250);
                 sleep(750);
 
                 //open claw
@@ -230,6 +229,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
             carousel = hardwareMap.get(DcMotor.class, "carousel");
             crane = hardwareMap.get(DcMotor.class, "crane");
             arm = hardwareMap.get(Servo.class, "arm");
+            redRightCarousel = hardwareMap.get(DcMotor.class, "redcarousel");
 
             crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -344,6 +344,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
             crane.setPower(power);
             sleep(time);
             crane.setPower(0);
+        }
+
+
+        public void Redcarousel(double power, int time){
+            redRightCarousel.setPower(power);
+            sleep(time);
+            redRightCarousel.setPower(0);
         }
     }
 

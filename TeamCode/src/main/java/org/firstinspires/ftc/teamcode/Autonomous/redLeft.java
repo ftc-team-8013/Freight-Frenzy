@@ -25,7 +25,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class redLeft extends LinearOpMode {
     OpenCvWebcam webcam;
 
-    //defining varibles
+    //defining variables
     BNO055IMU imu;
     Orientation angles;
     DcMotor frontLeft;
@@ -154,8 +154,15 @@ public class redLeft extends LinearOpMode {
             }
 
 
+            move(.1,200);
 
-            strafeLeft(1, 750);
+            //strafeLeft(1, 950);
+
+            gyroTurning(90);
+
+            move(.8,800);
+
+            gyroTurning(0);
 
             sleep(500);
 
@@ -171,13 +178,8 @@ public class redLeft extends LinearOpMode {
             sleep(500);
 
 
-            //turn to wall
-            gyroTurning(179);
-
-            sleep(500);
-
             //back up to wall
-            move(.5,700);
+            move(-.5,700);
 
             sleep(500);
 
@@ -188,6 +190,10 @@ public class redLeft extends LinearOpMode {
 
             //move to warehouse
             move(-1, 1000);
+
+            gyroTurning(0);
+
+            move(-.5,500);
 
 
         }
