@@ -116,13 +116,17 @@ public class redLeft extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
-                craneMotor(.5,900);
+                crane.setTargetPosition(-463);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "left"){
-                craneMotor(.5, 1600);
+                crane.setTargetPosition(-214);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
@@ -141,12 +145,16 @@ public class redLeft extends LinearOpMode {
                     telemetry.update();
                     sleep(500);
                 }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    craneMotor(-5,1000);
+                    crane.setTargetPosition(-463);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
                 }else{
-                    craneMotor(.5, 1500);
+                    crane.setTargetPosition(-214);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
@@ -154,20 +162,20 @@ public class redLeft extends LinearOpMode {
             }
 
 
-            move(.1,200);
+            move(.1,400);
 
             //strafeLeft(1, 950);
 
             gyroTurning(90);
 
-            move(.8,800);
+            move(.8,500);
 
             gyroTurning(0);
 
             sleep(500);
 
             //forward
-            move(.4,500);
+            move(.4,600);
 
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
@@ -183,13 +191,16 @@ public class redLeft extends LinearOpMode {
 
             sleep(500);
 
+
+            move(.3,300);
+
             //turn to warehouse
             gyroTurning(90);
 
             sleep(500);
 
             //move to warehouse
-            move(-1, 1000);
+            move(-1, 1500);
 
             gyroTurning(0);
 

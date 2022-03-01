@@ -56,7 +56,7 @@ public class GyroTurning extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             angles                       = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double targetAngle = 90;
+            double targetAngle = -90;
             double currentAngle = angles.firstAngle;
             if (angles.firstAngle >= targetAngle-0.5 && angles.firstAngle <= targetAngle+0.5){
                 frontLeft.setPower(0);

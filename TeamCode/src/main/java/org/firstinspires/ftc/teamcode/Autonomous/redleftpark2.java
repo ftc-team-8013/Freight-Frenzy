@@ -1,17 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-
-import android.graphics.Path;
-//IMPORTS
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -22,8 +19,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-    @Autonomous(name="redleft", group="Auto")
-    public class redRightCarousel extends LinearOpMode {
+
+    @Autonomous(name="redleftpark2", group="Auto")
+    public class redleftpark2 extends LinearOpMode {
         OpenCvWebcam webcam;
 
         //defining varibles
@@ -182,10 +180,15 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 sleep(500);
 
                 //turns on the carousel motor to get the duck onto the floor
-                Redcarousel(-1,2000);
+                Redcarousel(-.75,2000);
+
+
+                move(.2,200);
+
+                gyroTurning(-90);
 
                 //moving to warehouse
-                move(0.5, 1650);
+                move(0.5, 1600);
 
                 //turning to shipping hub
                 gyroTurning(0);
@@ -199,14 +202,36 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 arm.setPosition(1);
                 sleep(750);
 
-                move(-.2,200);
+                //back up to wall
+                move(-.5,700);
+
+                sleep(500);
 
 
-                // turn 90
-                gyroTurning(-90);
+                move(.3,300);
 
-                //move to park
-                move(1, 1250);
+                //turn to warehouse
+                gyroTurning(90);
+
+                sleep(500);
+
+                //move to warehouse
+                //move(-1, 1300);
+
+
+                frontLeft.setPower(-.85);
+                frontRight.setPower(-1);
+                backLeft.setPower(-.85);
+                backRight.setPower(-1);
+                sleep(1200);
+                stopMotors();
+
+                gyroTurning(0);
+
+                move(-.5,500);
+
+
+
             }
             webcam.stopStreaming();
         }
@@ -353,4 +378,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
             redRightCarousel.setPower(0);
         }
     }
+
+
 
