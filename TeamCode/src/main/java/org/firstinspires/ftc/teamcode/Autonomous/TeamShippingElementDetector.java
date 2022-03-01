@@ -52,7 +52,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline {
         Scalar orangeHighHSV = new Scalar(71, 183, 255);
 
         //green
-        Scalar greenLowHSV = new Scalar(40,40,40)
+        Scalar greenLowHSV = new Scalar(40,40,40);
         Scalar greenHighHSV = new Scalar(70,255,255);
 
         Core.inRange(mat, greenLowHSV, greenHighHSV, mat);
