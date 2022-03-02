@@ -175,7 +175,7 @@ public class redRight extends LinearOpMode {
             sleep(500);
 
             //forward
-            move(.4,600);
+            move(.4,500);
 
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
@@ -187,24 +187,20 @@ public class redRight extends LinearOpMode {
 
 
             //back up to wall
-            move(-.5,700);
+            move(-.5,800);
 
             sleep(500);
 
 
-            move(.3,300);
+            move(.3,750);
 
             //turn to warehouse
-            gyroTurning(90);
+            gyroTurning(-90);
 
             sleep(500);
 
             //move to warehouse
-            move(-1, 1500);
-
-            gyroTurning(0);
-
-            move(-.5,500);
+            move(1, 1300);
 
 
         }
