@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name="redright", group="Auto")
-public class redLeft extends LinearOpMode {
+public class redRight extends LinearOpMode {
     OpenCvWebcam webcam;
 
     //defining variables

@@ -20,7 +20,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 
-    @Autonomous(name="redleftpark2", group="Auto")
+    @Autonomous(name="redleft", group="Auto")
     public class redleftpark2 extends LinearOpMode {
         OpenCvWebcam webcam;
 
@@ -180,7 +180,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 sleep(500);
 
                 //turns on the carousel motor to get the duck onto the floor
-                Redcarousel(-.75,2000);
+                Redcarousel(-.85,2000);
 
 
                 move(.2,200);
@@ -188,7 +188,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 gyroTurning(-90);
 
                 //moving to warehouse
-                move(0.5, 1600);
+                move(.75,900);
 
                 //turning to shipping hub
                 gyroTurning(0);
@@ -196,16 +196,16 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
                 //move to delivery
                 move(0.25, 1250);
-                sleep(750);
+                sleep(200);
 
                 //open claw
                 arm.setPosition(1);
-                sleep(750);
+                sleep(700);
 
                 //back up to wall
                 move(-.5,700);
 
-                sleep(500);
+                sleep(200);
 
 
                 move(.3,300);
@@ -219,9 +219,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 //move(-1, 1300);
 
 
-                frontLeft.setPower(-.85);
+                frontLeft.setPower(-.88);
                 frontRight.setPower(-1);
-                backLeft.setPower(-.85);
+                backLeft.setPower(-.88);
                 backRight.setPower(-1);
                 sleep(1200);
                 stopMotors();
