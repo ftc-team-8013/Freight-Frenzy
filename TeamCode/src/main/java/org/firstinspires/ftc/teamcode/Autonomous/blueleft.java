@@ -79,6 +79,8 @@ public class blueleft extends LinearOpMode {
             arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
+            crane.setTargetPosition(-900);
+            crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             crane.setPower(-1);
             sleep(3000);
 
@@ -116,13 +118,17 @@ public class blueleft extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
-                craneMotor(.5,900);
+                crane.setTargetPosition(-550);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "left"){
-                craneMotor(.5, 1600);
+                crane.setTargetPosition(-300);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
@@ -131,6 +137,7 @@ public class blueleft extends LinearOpMode {
             else if(locationOfTSE == "not Found"){
 
                 sleep(400);
+                telemetry.clearAll();
                 telemetry.addData("one",barcode1);
                 telemetry.addData("two",barcode2);
                 telemetry.update();
@@ -141,12 +148,16 @@ public class blueleft extends LinearOpMode {
                     telemetry.update();
                     sleep(500);
                 }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    craneMotor(-5,1000);
+                    crane.setTargetPosition(-550);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
                 }else{
-                    craneMotor(.5, 1500);
+                    crane.setTargetPosition(-300);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
@@ -171,23 +182,20 @@ public class blueleft extends LinearOpMode {
             sleep(500);
 
 
-            //turn to wall
-            gyroTurning(179);
-
-            sleep(500);
-
             //back up to wall
-            move(.5,700);
+            move(-.5,800);
 
             sleep(500);
+
+            move(.3,750);
 
             //turn to warehouse
-            gyroTurning(-90);
+            gyroTurning(90);
 
             sleep(500);
 
             //move to warehouse
-            move(-1, 1000);
+            move(1, 1300);
 
 
         }

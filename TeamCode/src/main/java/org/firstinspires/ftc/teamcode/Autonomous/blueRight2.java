@@ -21,8 +21,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name="blueright", group="Auto")
-public class blueright extends LinearOpMode {
+@Autonomous(name="blueright(backup)", group="Auto")
+public class blueRight2 extends LinearOpMode {
     OpenCvWebcam webcam;
 
     //defining varibles
@@ -169,6 +169,8 @@ public class blueright extends LinearOpMode {
             //reverse back into carousel
             move(-0.3, 1300);
 
+            //basic sleeping to make sure we are turning the motors as soon as the robot stops
+            sleep(500);
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1, 2000);
 
@@ -180,33 +182,23 @@ public class blueright extends LinearOpMode {
             sleep(500);
 
             //move to delivery
-            move(0.25, 1000);
-            sleep(250);
+            move(0.25, 1300);
+            sleep(750);
 
             //open claw
             arm.setPosition(1);
             sleep(750);
 
             //move back from shipping hub
-            move(-0.5, 780);
+            move(-0.2, 200);
             sleep(200);
 
-            move(.3,300);
-
             // turn 90
-            gyroTurning(-90);
+            gyroTurning(90);
 
-            //move to park
-            frontLeft.setPower(-1);
-            frontRight.setPower(-.85);
-            backLeft.setPower(-1);
-            backRight.setPower(-.85);
-            sleep(1100);
-            stopMotors();
+            move(1,1250);
 
-            gyroTurning(0);
 
-            move(-.5,500);
         }
         webcam.stopStreaming();
     }
