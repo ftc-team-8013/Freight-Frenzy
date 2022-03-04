@@ -21,7 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name="blueright", group="Auto")
+@Autonomous(name="blueright close parking", group="Auto")
 public class blueright extends LinearOpMode {
     OpenCvWebcam webcam;
 
