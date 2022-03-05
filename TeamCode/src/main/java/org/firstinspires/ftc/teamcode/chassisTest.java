@@ -3,6 +3,8 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import android.provider.Settings;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -41,6 +43,7 @@ public class chassisTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            telemetry.addData("time", System.currentTimeMillis());
 
             //defining driving variables.
             double turn;

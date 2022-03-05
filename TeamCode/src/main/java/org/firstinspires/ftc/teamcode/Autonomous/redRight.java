@@ -1,52 +1,27 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import android.graphics.Path;
-//IMPORTS
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.functions;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+
 @Autonomous(name="redright", group="Auto")
 public class redRight extends LinearOpMode {
-    OpenCvWebcam webcam;
+    functions robot = new functions();
 
-    //defining variables
-    BNO055IMU imu;
-    Orientation angles;
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
-
-    DcMotor carousel;
-    DcMotor crane;
-    Servo arm;
-
-    ModernRoboticsI2cRangeSensor rangeSensorM;
-    ModernRoboticsI2cRangeSensor rangeSensorR;
+    public OpenCvWebcam webcam = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         //init motors
-        initDriveMotors();
-        initMiscMotors();
-        initGyro();
+        robot.init(hardwareMap);
 
         //refrence TeamShippingElementDector
         int cameraMonitorViewId = hardwareMap.appContext
@@ -75,11 +50,17 @@ public class redRight extends LinearOpMode {
         double barcode2 = 0;
 
         if (opModeIsActive()) {
+            telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
+            telemetry.update();
             //close claw
-            arm.setPosition(0);
+            robot.arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
-            crane.setPower(-1);
+            robot.crane.setTargetPosition(-900);
+            robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.crane.setPower(-1);
+            telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
+            telemetry.update();
             sleep(3000);
 
             //determineing where the tse is
@@ -96,251 +77,119 @@ public class redRight extends LinearOpMode {
                 case NOT_FOUND:
                     locationOfTSE = "not Found";
                     //if not found use gyro
-                    move(0.25, 500);
+                    robot.move(0.25, 500);
                     sleep(1500);
 
-                    barcode1 = rangeSensorM.cmUltrasonic();
+                    barcode1 = robot.rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    gyroTurning(12);
+                    robot.gyroTurning(12, 500);
                     sleep(3000);
-                    barcode2 = rangeSensorM.cmUltrasonic();
+                    barcode2 = robot.rangeSensorM.cmUltrasonic();
                     break;
             }
 
 
             //moveing crane to right position
-            if(locationOfTSE == "right"){
-                move(.25, 500);
+            if (locationOfTSE == "right") {
+                robot.move(.25, 500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
-            }else if (locationOfTSE == "middle") {
-                crane.setTargetPosition(-463);
-                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                crane.setPower(.5);
-                move(.25, 500);
+            } else if (locationOfTSE == "middle") {
+                robot.crane.setTargetPosition(-550);
+                robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.crane.setPower(.5);
+                telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
+                telemetry.update();
+                robot.move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
-            }else if (locationOfTSE == "left"){
-                crane.setTargetPosition(-214);
-                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                crane.setPower(.5);
-                move(.25, 500);
+            } else if (locationOfTSE == "left") {
+                robot.crane.setTargetPosition(-300);
+                robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.crane.setPower(.5);
+                robot.move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
-            }
-            else if(locationOfTSE == "not Found"){
+            } else if (locationOfTSE == "not Found") {
 
                 sleep(400);
-                telemetry.addData("one",barcode1);
-                telemetry.addData("two",barcode2);
+                telemetry.clearAll();
+                telemetry.addData("one", barcode1);
+                telemetry.addData("two", barcode2);
                 telemetry.update();
 
                 //for distance
-                if(barcode1 <= 45 && barcode1 >= 30){
+                if (barcode1 <= 45 && barcode1 >= 30) {
                     telemetry.addLine("Right");
                     telemetry.update();
                     sleep(500);
-                }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    crane.setTargetPosition(-463);
-                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    crane.setPower(.5);
+                } else if (barcode2 <= 50 && barcode2 >= 30) {
+                    robot.crane.setTargetPosition(-550);
+                    robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
-                }else{
-                    crane.setTargetPosition(-214);
-                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    crane.setPower(.5);
+                } else {
+                    robot.crane.setTargetPosition(-300);
+                    robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.crane.setPower(.5);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
                 }
             }
-
-
-            move(.1,400);
+            robot.move(.1, 400);
 
             //strafeLeft(1, 950);
 
-            gyroTurning(90);
+            robot.gyroTurning(90, 1500);
 
-            move(.8,500);
+            robot.move(.8, 500);
 
-            gyroTurning(0);
+            robot.gyroTurning(0, 1500);
 
             sleep(500);
 
             //forward
-            move(.4,500);
+            robot.move(.4, 600);
 
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
             //open arm
-            arm.setPosition(1);
+            robot.arm.setPosition(1);
             sleep(500);
 
 
             //back up to wall
-            move(-.5,800);
+            robot.move(-.5, 800);
 
             sleep(500);
 
-
-            move(.3,750);
+            robot.move(.3, 750);
 
             //turn to warehouse
-            gyroTurning(-90);
+            robot.gyroTurning(-90, 1500);
 
             sleep(500);
 
             //move to warehouse
-            move(1, 1300);
+            robot.move(1, 1300);
 
+            robot.gyroTurning(-90, 1500);
 
+            robot.strafeLeft(0.75, 500);
+
+            robot.gyroTurning(-90, 1500);
+
+            robot.move(0.5, 1000);
         }
         webcam.stopStreaming();
     }
-
-
-    //Init methods
-    public void initDriveMotors() {
-        //Setting variables in code to a motor in the configuration.
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-
-        //Setting direction of motors.
-        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
-
-    public void initMiscMotors() {
-        carousel = hardwareMap.get(DcMotor.class, "carousel");
-        crane = hardwareMap.get(DcMotor.class, "crane");
-        arm = hardwareMap.get(Servo.class, "arm");
-
-        rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
-        rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
-    }
-
-    public void initGyro() {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        sleep(250);
-    }
-
-    //Movement methods
-    public boolean gyroTurning(double targetAngle) {
-        boolean foundAngle = false;
-        //while (opModeIsActive()) {
-        while (foundAngle == false) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double currentAngle = angles.firstAngle;
-
-            if (angles.firstAngle >= targetAngle - 0.1 && angles.firstAngle <= targetAngle + 0.1) {
-                frontLeft.setPower(0);
-                frontRight.setPower(0);
-                backLeft.setPower(0);
-                backRight.setPower(0);
-                foundAngle = true;
-                sleep(1000);
-                break;
-            } else if (angles.firstAngle >= targetAngle + 0.5) {
-                if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.3);
-                    frontRight.setPower(-0.3);
-                    backLeft.setPower(0.3);
-                    backRight.setPower(-0.3);
-                    foundAngle = false;
-                } else {
-                    frontLeft.setPower(0.5);
-                    frontRight.setPower(-0.5);
-                    backLeft.setPower(0.5);
-                    backRight.setPower(-0.5);
-                    foundAngle = false;
-                }
-            } else if (angles.firstAngle <= targetAngle - 0.5) {
-                if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.3);
-                    frontRight.setPower(0.3);
-                    backLeft.setPower(-0.3);
-                    backRight.setPower(0.3);
-                    foundAngle = false;
-                } else {
-                    frontLeft.setPower(-0.5);
-                    frontRight.setPower(0.5);
-                    backLeft.setPower(-0.5);
-                    backRight.setPower(0.5);
-                    foundAngle = false;
-                }
-            }
-        }
-        return foundAngle;
-    }
-
-
-    public void stopMotors(){
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backLeft.setPower(0);
-        backRight.setPower(0);
-    }
-
-    public void move(double power, int time){
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
-        backLeft.setPower(power);
-        backRight.setPower(power);
-        sleep(time);
-        stopMotors();
-    }
-
-    public void strafeLeft(double power, int time){
-        frontLeft.setPower(-power);
-        frontRight.setPower(power);
-        backLeft.setPower(power);
-        backRight.setPower(-power);
-        sleep(time);
-        stopMotors();
-    }
-
-    public void strafeRight(double power, int time){
-        frontLeft.setPower(power);
-        frontRight.setPower(-power);
-        backLeft.setPower(-power);
-        backRight.setPower(power);
-        sleep(time);
-        stopMotors();
-    }
-
-    //Other methods
-    public void carouselMotor(double power, int time){
-        carousel.setPower(power);
-        sleep(time);
-        carousel.setPower(0);
-    }
-
-    public void craneMotor(double power, int time){
-        crane.setPower(power);
-        sleep(time);
-        crane.setPower(0);
-    }
 }
-
-
-
