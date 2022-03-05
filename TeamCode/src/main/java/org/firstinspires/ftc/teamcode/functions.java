@@ -168,9 +168,9 @@ public class functions {
     }
 
     public void redCarouselMotor(double power, int time) throws InterruptedException {
-        carousel.setPower(power);
+        redCarousel.setPower(power);
         sleep(time);
-        carousel.setPower(0);
+        redCarousel.setPower(0);
     }
 
     public void craneMotor(double power, int time) throws InterruptedException {
