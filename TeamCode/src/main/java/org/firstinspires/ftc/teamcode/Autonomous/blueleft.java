@@ -162,13 +162,12 @@ public class blueleft extends LinearOpMode {
             robot.arm.setPosition(1);
             sleep(500);
 
-
             //back up to wall
-            robot.move(-.5,800);
+            robot.move(-.5, 800);
 
             sleep(500);
 
-            robot.move(.3,750);
+            robot.move(.3, 750);
 
             //turn to warehouse
             robot.gyroTurning(90, 1500);
@@ -178,6 +177,13 @@ public class blueleft extends LinearOpMode {
             //move to warehouse
             robot.move(1, 1300);
 
+            robot.gyroTurning(90, 1500);
+
+            robot.strafeLeft(0.75, 500);
+
+            robot.gyroTurning(90, 1500);
+
+            robot.move(0.5, 1000);
 
         }
         webcam.stopStreaming();
