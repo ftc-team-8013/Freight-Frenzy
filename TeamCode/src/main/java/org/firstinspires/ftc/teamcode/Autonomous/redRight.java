@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.functions;
+import org.firstinspires.ftc.teamcode.robotClass;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name="redright", group="Auto")
 public class redRight extends LinearOpMode {
-    functions robot = new functions();
+    robotClass robot = new robotClass();
 
     public OpenCvWebcam webcam = null;
 

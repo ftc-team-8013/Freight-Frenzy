@@ -23,7 +23,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import static java.lang.Thread.sleep;
 
-public class functions {
+public class robotClass {
     public DcMotor frontLeft = null;
     public DcMotor backLeft = null; 
     public DcMotor frontRight = null; 
@@ -40,7 +40,7 @@ public class functions {
     
     public ModernRoboticsI2cRangeSensor rangeSensorM = null;
     
-    public functions() {
+    public robotClass() {
     }
     
     public void init(HardwareMap ahsMap) {
