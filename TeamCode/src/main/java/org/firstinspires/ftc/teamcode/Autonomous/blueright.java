@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+
+import android.graphics.Path;
+//IMPORTS
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -19,8 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-
-@Autonomous(name="blueright", group="Auto")
+@Autonomous(name="blueright(backup)", group="Auto")
 public class blueright extends LinearOpMode {
     OpenCvWebcam webcam;
 
@@ -182,13 +184,8 @@ public class blueright extends LinearOpMode {
             //turns on the carousel motor to get the duck onto the floor
             carouselMotor(1,2000);
 
-
-            move(.2,200);
-
-            gyroTurning(-90);
-
             //moving to warehouse
-            move(.75,900);
+            move(0.5, 1650);
 
             //turning to shipping hub
             gyroTurning(0);
@@ -196,42 +193,20 @@ public class blueright extends LinearOpMode {
 
             //move to delivery
             move(0.25, 1250);
-            sleep(200);
+            sleep(750);
 
             //open claw
             arm.setPosition(1);
-            sleep(700);
+            sleep(750);
 
-            //back up to wall
-            move(-.5,700);
-
-            sleep(200);
+            move(-.2,200);
 
 
-            move(.3,300);
+            // turn 90
+            gyroTurning(90);
 
-            //turn to warehouse
-            gyroTurning(-90);
-
-            sleep(500);
-
-            //move to warehouse
-            //move(-1, 1300);
-
-
-            frontLeft.setPower(-.88);
-            frontRight.setPower(-1);
-            backLeft.setPower(-.88);
-            backRight.setPower(-1);
-            sleep(1200);
-            stopMotors();
-
-            gyroTurning(0);
-
-            move(-.5,500);
-
-
-
+            //move to park
+            move(1, 1250);
         }
         webcam.stopStreaming();
     }
