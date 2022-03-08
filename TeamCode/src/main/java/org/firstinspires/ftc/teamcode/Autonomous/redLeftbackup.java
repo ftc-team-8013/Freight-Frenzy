@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+
 import android.graphics.Path;
 //IMPORTS
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -21,11 +22,11 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name="redright", group="Auto")
-public class redRight extends LinearOpMode {
+@Autonomous(name="redleft(backup)", group="Auto")
+public class redLeftbackup extends LinearOpMode {
     OpenCvWebcam webcam;
 
-    //defining variables
+    //defining varibles
     BNO055IMU imu;
     Orientation angles;
     DcMotor frontLeft;
@@ -34,6 +35,7 @@ public class redRight extends LinearOpMode {
     DcMotor backRight;
 
     DcMotor carousel;
+    DcMotor redRightCarousel;
     DcMotor crane;
     Servo arm;
 
@@ -50,8 +52,7 @@ public class redRight extends LinearOpMode {
 
         //refrence TeamShippingElementDector
         int cameraMonitorViewId = hardwareMap.appContext
-                .getResources().getIdentifier("cameraMonitorViewId",
-                        "id", hardwareMap.appContext.getPackageName());
+                .getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         TeamShippingElementDetector detector = new TeamShippingElementDetector(telemetry);
         webcam.setPipeline(detector);
@@ -79,6 +80,9 @@ public class redRight extends LinearOpMode {
             arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
+            //-800
+            crane.setTargetPosition(-800);
+            crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             crane.setPower(-1);
             sleep(3000);
 
@@ -102,29 +106,32 @@ public class redRight extends LinearOpMode {
                     barcode1 = rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    gyroTurning(12);
-                    sleep(3000);
+                    gyroTurning(15);
+                    sleep(1000);
+                    gyroTurning(-90);
                     barcode2 = rangeSensorM.cmUltrasonic();
                     break;
             }
 
 
-            //moveing crane to right position
+            //moving crane to right position
             if(locationOfTSE == "right"){
                 move(.25, 500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
-                crane.setTargetPosition(-463);
+                //-463
+                crane.setTargetPosition(-500);
                 crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                crane.setPower(.5);
+                crane.setPower(0.5);
                 move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "left"){
-                crane.setTargetPosition(-214);
+                //-214
+                crane.setTargetPosition(-250);
                 crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 crane.setPower(.5);
                 move(.25, 500);
@@ -155,59 +162,54 @@ public class redRight extends LinearOpMode {
                     crane.setTargetPosition(-214);
                     crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     crane.setPower(.5);
+                    craneMotor(.5, 1500);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
                 }
+
             }
+            //turning 90 degrees counterclockwise to carousel
+            gyroTurning(-90);
 
+            //reverse back into carousel
+            move(-.3, 600);
+            gyroTurning(-90);
 
-            move(.1,400);
-
-            //strafeLeft(1, 950);
-
-            gyroTurning(90);
-
-            move(.8,500);
-
-            gyroTurning(0);
-
-            sleep(500);
-
-            //forward
-            move(.4,500);
-
-
+            //reverse back into carousel
+            move(-.3, 1200);
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
-            //open arm
+            //turns on the carousel motor to get the duck onto the floor
+            Redcarousel(-1,2000);
+
+            //moving to warehouse
+            move(0.5, 1650);
+
+            //turning to shipping hub
+            gyroTurning(0);
+            sleep(500);
+
+            //move to delivery
+            move(0.25, 1250);
+            sleep(750);
+
+            //open claw
             arm.setPosition(1);
-            sleep(500);
+            sleep(750);
+
+            move(-.2,200);
 
 
-            //back up to wall
-            move(-.5,800);
-
-            sleep(500);
-
-
-            move(.3,750);
-
-            //turn to warehouse
+            // turn 90
             gyroTurning(-90);
 
-            sleep(500);
-
-            //move to warehouse
-            move(1, 1300);
-
-
+            //move to park
+            move(1, 1250);
         }
         webcam.stopStreaming();
     }
-
-
     //Init methods
     public void initDriveMotors() {
         //Setting variables in code to a motor in the configuration.
@@ -227,6 +229,9 @@ public class redRight extends LinearOpMode {
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
+        redRightCarousel = hardwareMap.get(DcMotor.class, "redcarousel");
+
+        crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
         rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
@@ -339,5 +344,12 @@ public class redRight extends LinearOpMode {
         crane.setPower(power);
         sleep(time);
         crane.setPower(0);
+    }
+
+
+    public void Redcarousel(double power, int time){
+        redRightCarousel.setPower(power);
+        sleep(time);
+        redRightCarousel.setPower(0);
     }
 }
