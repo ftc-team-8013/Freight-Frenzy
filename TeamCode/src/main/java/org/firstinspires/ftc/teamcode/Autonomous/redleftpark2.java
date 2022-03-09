@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Autonomous.TeamShippingElementDetector;
 import org.firstinspires.ftc.teamcode.robotClass;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -49,14 +50,17 @@ import org.openftc.easyopencv.OpenCvWebcam;
             double barcode2 = 0;
 
             if (opModeIsActive()) {
+                telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
+                telemetry.update();
                 //close claw
                 robot.arm.setPosition(0);
                 sleep(1500);
                 //crane up out of the way
-                //-800
-                robot.crane.setTargetPosition(-1000);
+                robot.crane.setTargetPosition(-900);
                 robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.crane.setPower(-1);
+                telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
+                telemetry.update();
                 sleep(3000);
 
                 //determineing where the tse is
@@ -79,34 +83,33 @@ import org.openftc.easyopencv.OpenCvWebcam;
                         barcode1 = robot.rangeSensorM.cmUltrasonic();
                         sleep(400);
 
-                        robot.gyroTurning(15, 1000);
-                        sleep(1000);
-                        robot.gyroTurning(-90, 1500);
+                        robot.gyroTurning(12, 500L);
+                        sleep(3000);
                         barcode2 = robot.rangeSensorM.cmUltrasonic();
                         break;
                 }
 
 
-                //moving crane to right position
+                //moveing crane to right position
                 if (locationOfTSE == "right") {
                     robot.move(.25, 500);
                     telemetry.addLine("Right");
                     telemetry.update();
                     sleep(500);
                 } else if (locationOfTSE == "middle") {
-                    //-463
-                    robot.crane.setTargetPosition(-500);
+                    robot.crane.setTargetPosition(-550);
                     robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.crane.setPower(0.5);
+                    robot.crane.setPower(1);
+                    telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
+                    telemetry.update();
                     robot.move(.25, 500);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(500);
                 } else if (locationOfTSE == "left") {
-                    //-214
-                    robot.crane.setTargetPosition(-250);
+                    robot.crane.setTargetPosition(-300);
                     robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.crane.setPower(.5);
+                    robot.crane.setPower(1);
                     robot.move(.25, 500);
                     telemetry.addLine("Left");
                     telemetry.update();
@@ -114,6 +117,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 } else if (locationOfTSE == "not Found") {
 
                     sleep(400);
+                    telemetry.clearAll();
                     telemetry.addData("one", barcode1);
                     telemetry.addData("two", barcode2);
                     telemetry.update();
@@ -124,25 +128,23 @@ import org.openftc.easyopencv.OpenCvWebcam;
                         telemetry.update();
                         sleep(500);
                     } else if (barcode2 <= 50 && barcode2 >= 30) {
-                        robot.crane.setTargetPosition(-463);
+                        robot.crane.setTargetPosition(-550);
                         robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                         robot.crane.setPower(.5);
                         telemetry.addLine("Middle");
                         telemetry.update();
                         sleep(400);
                     } else {
-                        robot.crane.setTargetPosition(-214);
+                        robot.crane.setTargetPosition(-300);
                         robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                         robot.crane.setPower(.5);
-                        robot.craneMotor(.5, 1500);
                         telemetry.addLine("Left");
                         telemetry.update();
                         sleep(300);
                     }
-
                 }
                 //turning 90 degrees counterclockwise to carousel
-                robot.gyroTurning(-90, 1500);
+                robot.gyroTurning(-90, 1500L);
 
                 //reverse back into carousel
                 robot.move(-.3, 1800);
@@ -155,13 +157,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
                 robot.move(.2, 200);
 
-                robot.gyroTurning(-90, 1500);
+                robot.gyroTurning(-90, 1500L);
 
                 //moving to warehouse
                 robot.move(.75, 900);
 
                 //turning to shipping hub
-                robot.gyroTurning(0, 1500);
+                robot.gyroTurning(0, 1500L);
                 sleep(500);
 
                 //move to delivery
@@ -180,7 +182,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 robot.move(.3, 400);
 
                 //turn to warehouse
-                robot.gyroTurning(90, 1500);
+                robot.gyroTurning(90, 1500L);
 
                 sleep(500);
 
@@ -191,7 +193,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 sleep(1200);
                 robot.stopMotors();
 
-                robot.gyroTurning(0, 1500);
+                robot.gyroTurning(0, 1500L);
 
                 robot.move(-.5, 500);
             }

@@ -83,7 +83,7 @@ public class redRight extends LinearOpMode {
                     barcode1 = robot.rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    robot.gyroTurning(12, 500);
+                    robot.gyroTurning(12, 500L);
                     sleep(3000);
                     barcode2 = robot.rangeSensorM.cmUltrasonic();
                     break;
@@ -99,7 +99,7 @@ public class redRight extends LinearOpMode {
             } else if (locationOfTSE == "middle") {
                 robot.crane.setTargetPosition(-550);
                 robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.crane.setPower(.5);
+                robot.crane.setPower(1);
                 telemetry.addData("Ecoder value", robot.crane.getCurrentPosition());
                 telemetry.update();
                 robot.move(.25, 500);
@@ -109,7 +109,7 @@ public class redRight extends LinearOpMode {
             } else if (locationOfTSE == "left") {
                 robot.crane.setTargetPosition(-300);
                 robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.crane.setPower(.5);
+                robot.crane.setPower(1);
                 robot.move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
@@ -147,11 +147,11 @@ public class redRight extends LinearOpMode {
 
             //strafeLeft(1, 950);
 
-            robot.gyroTurning(90, 1500);
+            robot.gyroTurning(90, 1500L);
 
             robot.move(.8, 500);
 
-            robot.gyroTurning(0, 1500);
+            robot.gyroTurning(0, 1500L);
 
             sleep(500);
 
@@ -172,21 +172,21 @@ public class redRight extends LinearOpMode {
 
             sleep(500);
 
-            robot.move(.3, 750);
+            robot.move(.3, 1000);
 
             //turn to warehouse
-            robot.gyroTurning(-90, 1500);
+            robot.gyroTurning(-90, 1500L);
 
             sleep(500);
 
             //move to warehouse
             robot.move(1, 1300);
 
-            robot.gyroTurning(-90, 1500);
+            robot.gyroTurning(-90, 1500L);
 
             robot.strafeLeft(0.75, 500);
 
-            robot.gyroTurning(-90, 1500);
+            robot.gyroTurning(-90, 1500L);
 
             robot.move(0.5, 1000);
         }

@@ -31,7 +31,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline {
 
     static final Rect RIGHT_ROI = new Rect(
             new Point(240, 10),
-            new Point(270, 150));
+            new Point(320, 150));
 
     static double percentThreshold = 0.05;
 
