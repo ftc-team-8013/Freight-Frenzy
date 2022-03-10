@@ -1,12 +1,22 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import android.graphics.Path;
 //IMPORTS
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.hardware.DcMotor;
-
-        import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-        import org.firstinspires.ftc.teamcode.robotClass;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.robotClass;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -16,10 +26,16 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class blueleft extends LinearOpMode {
     OpenCvWebcam webcam;
 
+    //defining variables
+    robotClass robot = new robotClass();
+
+    ModernRoboticsI2cRangeSensor rangeSensorM;
+
     @Override
     public void runOpMode() throws InterruptedException {
+        robot.init(hardwareMap);
+        //init motors
 
-        robotClass robot = new robotClass();
 
         //refrence TeamShippingElementDector
         int cameraMonitorViewId = hardwareMap.appContext
@@ -52,9 +68,7 @@ public class blueleft extends LinearOpMode {
             robot.arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
-            robot.crane.setTargetPosition(-900);
-            robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot. crane.setPower(-1);
+            robot.crane.setPower(-1);
             sleep(3000);
 
             //determineing where the tse is
@@ -74,61 +88,59 @@ public class blueleft extends LinearOpMode {
                     robot.move(0.25, 500);
                     sleep(1500);
 
-                    barcode1 = robot.rangeSensorM.cmUltrasonic();
+                    barcode1 = rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    robot.gyroTurning(12, 1000);
+                    robot.gyroTurning(12, 1000L);
                     sleep(3000);
-                    barcode2 = robot.rangeSensorM.cmUltrasonic();
+                    barcode2 = rangeSensorM.cmUltrasonic();
                     break;
             }
 
 
             //moveing crane to right position
-            if(locationOfTSE == "right"){
+            if (locationOfTSE == "right") {
                 robot.move(.25, 500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
-            }else if (locationOfTSE == "middle") {
-                robot.crane.setTargetPosition(-550);
+            } else if (locationOfTSE == "middle") {
+                robot.crane.setTargetPosition(-463);
                 robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.crane.setPower(.5);
                 robot.move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
-            }else if (locationOfTSE == "left"){
-                robot.crane.setTargetPosition(-300);
+            } else if (locationOfTSE == "left") {
+                robot.crane.setTargetPosition(-214);
                 robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.crane.setPower(.5);
                 robot.move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
-            }
-            else if(locationOfTSE == "not Found"){
+            } else if (locationOfTSE == "not Found") {
 
                 sleep(400);
-                telemetry.clearAll();
-                telemetry.addData("one",barcode1);
-                telemetry.addData("two",barcode2);
+                telemetry.addData("one", barcode1);
+                telemetry.addData("two", barcode2);
                 telemetry.update();
 
                 //for distance
-                if(barcode1 <= 45 && barcode1 >= 30){
+                if (barcode1 <= 45 && barcode1 >= 30) {
                     telemetry.addLine("Right");
                     telemetry.update();
                     sleep(500);
-                }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    robot.crane.setTargetPosition(-550);
+                } else if (barcode2 <= 50 && barcode2 >= 30) {
+                    robot.crane.setTargetPosition(-463);
                     robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
-                }else{
-                    robot.crane.setTargetPosition(-300);
+                } else {
+                    robot.crane.setTargetPosition(-214);
                     robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.crane.setPower(.5);
                     telemetry.addLine("Left");
@@ -137,12 +149,20 @@ public class blueleft extends LinearOpMode {
                 }
             }
 
-            robot.strafeRight(1, 750);
+            robot.move(.1, 400);
+
+            //strafeLeft(1, 950);
+
+            robot.gyroTurning(-90, 1500L);
+
+            robot.move(.8, 500);
+
+            robot.gyroTurning(0, 1500L);
 
             sleep(500);
 
             //forward
-            robot.move(.4,500);
+            robot.move(.4, 500);
 
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
@@ -152,6 +172,7 @@ public class blueleft extends LinearOpMode {
             robot.arm.setPosition(1);
             sleep(500);
 
+
             //back up to wall
             robot.move(-.5, 800);
 
@@ -160,24 +181,15 @@ public class blueleft extends LinearOpMode {
             robot.move(.3, 750);
 
             //turn to warehouse
-            robot.gyroTurning(90, 1500);
+            robot.gyroTurning(90, 1500L);
 
             sleep(500);
 
             //move to warehouse
             robot.move(1, 1300);
 
-            robot.gyroTurning(90, 1500);
-
-            robot.strafeLeft(0.75, 500);
-
-            robot.gyroTurning(90, 1500);
-
-            robot.move(0.5, 1000);
 
         }
         webcam.stopStreaming();
     }
 }
-
-
