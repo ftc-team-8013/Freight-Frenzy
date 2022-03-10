@@ -21,6 +21,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+
+//Rowen i know this is a back up program but I tested it and it works so format it too
 @Autonomous(name="blueright far parking", group="Auto")
 public class blueRight2 extends LinearOpMode {
     OpenCvWebcam webcam;
@@ -167,7 +169,11 @@ public class blueRight2 extends LinearOpMode {
             gyroTurning(90);
 
             //reverse back into carousel
-            move(-0.3, 1300);
+            move(-0.3, 450);
+
+            gyroTurning(90);
+
+            move(-.3,450);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
@@ -178,7 +184,7 @@ public class blueRight2 extends LinearOpMode {
             move(0.5, 1660);
 
             //turning to shipping hub
-            gyroTurning(0);
+            gyroTurning(1);
             sleep(500);
 
             //move to delivery
