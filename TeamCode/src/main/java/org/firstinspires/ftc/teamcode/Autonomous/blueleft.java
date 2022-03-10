@@ -22,6 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+//Rowen i did not change this one because i never finished it so we have to program this one tomorrow
 @Autonomous(name="blueleft", group="Auto")
 public class blueleft extends LinearOpMode {
     OpenCvWebcam webcam;
