@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
@@ -8,17 +8,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Autonomous.TeamShippingElementDetector;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import static java.lang.Thread.sleep;
 
@@ -72,12 +65,12 @@ public class robotClass {
 
 
     }
-    public boolean gyroTurning(double targetAngle, double duration) throws InterruptedException {
+    public boolean gyroTurning(double targetAngle, long duration) throws InterruptedException {
         boolean foundAngle = false;
         //while (foundAngle == false || did I reach time limit) {
 
-        double startTime = System.currentTimeMillis();
-        double currentTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         while (foundAngle == false || currentTime - startTime >= duration) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double currentAngle = angles.firstAngle;

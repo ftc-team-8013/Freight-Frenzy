@@ -24,29 +24,14 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class blueright extends LinearOpMode {
     OpenCvWebcam webcam;
 
-    //defining varibles
-    BNO055IMU imu;
-    Orientation angles;
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
-
-    DcMotor carousel;
-    DcMotor redRightCarousel;
-    DcMotor crane;
-    Servo arm;
+    robotClass robot = new robotClass();
 
     ModernRoboticsI2cRangeSensor rangeSensorM;
-    ModernRoboticsI2cRangeSensor rangeSensorR;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        //init motors
-        initDriveMotors();
-        initMiscMotors();
-        initGyro();
+        robot.init(hardwareMap);
 
         //refrence TeamShippingElementDector
         int cameraMonitorViewId = hardwareMap.appContext
@@ -75,13 +60,13 @@ public class blueright extends LinearOpMode {
 
         if (opModeIsActive()) {
             //close claw
-            arm.setPosition(0);
+            robot.arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
             //-800
-            crane.setTargetPosition(-800);
-            crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            crane.setPower(-1);
+            robot.crane.setTargetPosition(-800);
+            robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.crane.setPower(-1);
             sleep(3000);
 
             //determineing where the tse is
@@ -98,15 +83,15 @@ public class blueright extends LinearOpMode {
                 case NOT_FOUND:
                     locationOfTSE = "not Found";
                     //if not found use gyro
-                    move(0.25, 500);
+                    robot.move(0.25, 500);
                     sleep(1500);
 
                     barcode1 = rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    gyroTurning(15);
+                    robot.gyroTurning(15, 1000L);
                     sleep(1000);
-                    gyroTurning(-90);
+                    robot.gyroTurning(-90, 1500L);
                     barcode2 = rangeSensorM.cmUltrasonic();
                     break;
             }
@@ -114,25 +99,25 @@ public class blueright extends LinearOpMode {
 
             //moving crane to right position
             if(locationOfTSE == "right"){
-                move(.25, 500);
+                robot.move(.25, 500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
                 //-463
-                crane.setTargetPosition(-500);
-                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                crane.setPower(0.5);
-                move(.25, 500);
+                robot.crane.setTargetPosition(-500);
+                robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.crane.setPower(0.5);
+                robot.move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "left"){
                 //-214
-                crane.setTargetPosition(-250);
-                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                crane.setPower(.5);
-                move(.25, 500);
+                robot.crane.setTargetPosition(-250);
+                robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.crane.setPower(.5);
+                robot.move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
@@ -150,17 +135,17 @@ public class blueright extends LinearOpMode {
                     telemetry.update();
                     sleep(500);
                 }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    crane.setTargetPosition(-463);
-                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    crane.setPower(.5);
+                    robot.crane.setTargetPosition(-463);
+                    robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
                 }else{
-                    crane.setTargetPosition(-214);
-                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    crane.setPower(.5);
-                    craneMotor(.5, 1500);
+                    robot.crane.setTargetPosition(-214);
+                    robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.crane.setPower(.5);
+                    robot.craneMotor(.5, 1500);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
@@ -168,50 +153,50 @@ public class blueright extends LinearOpMode {
 
             }
             //turning 90 degrees counterclockwise to carousel
-            gyroTurning(90);
+            robot.gyroTurning(90, 1500L);
 
             //reverse back into carousel
-            move(-.3, 600);
-            gyroTurning(90);
+            robot.move(-.3, 600);
+            robot.gyroTurning(90, 500L);
 
             //reverse back into carousel
-            move(-.3, 800);
+            robot.move(-.3, 800);
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
             //turns on the carousel motor to get the duck onto the floor
-            carouselMotor(1,2000);
+            robot.carouselMotor(1,2000);
 
 
-            move(.2,200);
+            robot.move(.2,200);
 
-            gyroTurning(90);
+            robot.gyroTurning(90, 500L);
 
             //moving to warehouse
-            move(.75,900);
+            robot.move(.75,900);
 
             //turning to shipping hub
-            gyroTurning(0);
+            robot.gyroTurning(0, 1500L);
             sleep(500);
 
             //move to delivery
-            move(0.25, 1050);
+            robot.move(0.25, 1050);
             sleep(200);
 
             //open claw
-            arm.setPosition(1);
+            robot.arm.setPosition(1);
             sleep(700);
 
             //back up to wall
-            move(-.5,700);
+            robot.move(-.5,700);
 
             sleep(200);
 
 
-            move(.3,300);
+            robot.move(.3,300);
 
             //turn to warehouse
-            gyroTurning(-90);
+            robot.gyroTurning(-90, 1500L);
 
             sleep(500);
 
@@ -219,162 +204,20 @@ public class blueright extends LinearOpMode {
             //move(-1, 1300);
 
 
-            frontLeft.setPower(-1);
-            frontRight.setPower(-.88);
-            backLeft.setPower(-1);
-            backRight.setPower(-.88);
+            robot.frontLeft.setPower(-1);
+            robot.frontRight.setPower(-.88);
+            robot.backLeft.setPower(-1);
+            robot.backRight.setPower(-.88);
             sleep(1250);
-            stopMotors();
+            robot.stopMotors();
 
-            gyroTurning(0);
+            robot.gyroTurning(0, 1500L);
 
-            move(-.5,500);
+            robot.move(-.5,500);
 
 
 
         }
         webcam.stopStreaming();
-    }
-    //Init methods
-    public void initDriveMotors() {
-        //Setting variables in code to a motor in the configuration.
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-
-        //Setting direction of motors.
-        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
-
-    public void initMiscMotors() {
-        carousel = hardwareMap.get(DcMotor.class, "carousel");
-        crane = hardwareMap.get(DcMotor.class, "crane");
-        arm = hardwareMap.get(Servo.class, "arm");
-        redRightCarousel = hardwareMap.get(DcMotor.class, "redcarousel");
-
-        crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
-        rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
-    }
-
-    public void initGyro() {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        sleep(250);
-    }
-
-    //Movement methods
-    public boolean gyroTurning(double targetAngle) {
-        boolean foundAngle = false;
-        //while (opModeIsActive()) {
-        while (foundAngle == false) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double currentAngle = angles.firstAngle;
-
-            if (angles.firstAngle >= targetAngle - 0.1 && angles.firstAngle <= targetAngle + 0.1) {
-                frontLeft.setPower(0);
-                frontRight.setPower(0);
-                backLeft.setPower(0);
-                backRight.setPower(0);
-                foundAngle = true;
-                sleep(1000);
-                break;
-            } else if (angles.firstAngle >= targetAngle + 0.5) {
-                if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.3);
-                    frontRight.setPower(-0.3);
-                    backLeft.setPower(0.3);
-                    backRight.setPower(-0.3);
-                    foundAngle = false;
-                } else {
-                    frontLeft.setPower(0.5);
-                    frontRight.setPower(-0.5);
-                    backLeft.setPower(0.5);
-                    backRight.setPower(-0.5);
-                    foundAngle = false;
-                }
-            } else if (angles.firstAngle <= targetAngle - 0.5) {
-                if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.3);
-                    frontRight.setPower(0.3);
-                    backLeft.setPower(-0.3);
-                    backRight.setPower(0.3);
-                    foundAngle = false;
-                } else {
-                    frontLeft.setPower(-0.5);
-                    frontRight.setPower(0.5);
-                    backLeft.setPower(-0.5);
-                    backRight.setPower(0.5);
-                    foundAngle = false;
-                }
-            }
-        }
-        return foundAngle;
-    }
-
-
-    public void stopMotors(){
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backLeft.setPower(0);
-        backRight.setPower(0);
-    }
-
-    public void move(double power, int time){
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
-        backLeft.setPower(power);
-        backRight.setPower(power);
-        sleep(time);
-        stopMotors();
-    }
-
-    public void strafeLeft(double power, int time){
-        frontLeft.setPower(-power);
-        frontRight.setPower(power);
-        backLeft.setPower(power);
-        backRight.setPower(-power);
-        sleep(time);
-        stopMotors();
-    }
-
-    public void strafeRight(double power, int time){
-        frontLeft.setPower(power);
-        frontRight.setPower(-power);
-        backLeft.setPower(-power);
-        backRight.setPower(power);
-        sleep(time);
-        stopMotors();
-    }
-
-    //Other methods
-    public void carouselMotor(double power, int time){
-        carousel.setPower(power);
-        sleep(time);
-        carousel.setPower(0);
-    }
-
-    public void craneMotor(double power, int time){
-        crane.setPower(power);
-        sleep(time);
-        crane.setPower(0);
-    }
-
-
-    public void Redcarousel(double power, int time){
-        redRightCarousel.setPower(power);
-        sleep(time);
-        redRightCarousel.setPower(0);
     }
 }
