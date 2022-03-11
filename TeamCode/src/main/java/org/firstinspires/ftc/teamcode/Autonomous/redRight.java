@@ -172,6 +172,10 @@ public class redRight extends LinearOpMode {
 
             sleep(500);
 
+            robot.crane.setTargetPosition(-300);
+            robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.crane.setPower(.5);
+
             robot.move(.3, 1000);
 
             //turn to warehouse

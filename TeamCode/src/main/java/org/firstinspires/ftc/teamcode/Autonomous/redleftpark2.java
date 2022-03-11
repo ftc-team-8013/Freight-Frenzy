@@ -179,6 +179,10 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
                 sleep(200);
 
+                robot.crane.setTargetPosition(-300);
+                robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.crane.setPower(.5);
+
                 robot.move(.3, 400);
 
                 //turn to warehouse
