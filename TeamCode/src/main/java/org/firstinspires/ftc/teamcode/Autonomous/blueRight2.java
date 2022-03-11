@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import android.graphics.Path;
 //IMPORTS
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -21,8 +19,10 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name="Freight Frenzy Detector", group="Auto")
-public class OpenCvAutonomous extends LinearOpMode {
+
+//Rowen i know this is a back up program but I tested it and it works so format it too
+@Autonomous(name="blueright far parking", group="Auto")
+public class blueRight2 extends LinearOpMode {
     OpenCvWebcam webcam;
 
     //defining varibles
@@ -79,6 +79,8 @@ public class OpenCvAutonomous extends LinearOpMode {
             arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
+            crane.setTargetPosition(-900);
+            crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             crane.setPower(-1);
             sleep(3000);
 
@@ -116,13 +118,17 @@ public class OpenCvAutonomous extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "middle") {
-                craneMotor(.5,700);
+                crane.setTargetPosition(-550);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(500);
             }else if (locationOfTSE == "left"){
-                craneMotor(.5, 1600);
+                crane.setTargetPosition(-300);
+                crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                crane.setPower(.5);
                 move(.25, 500);
                 telemetry.addLine("Left");
                 telemetry.update();
@@ -131,6 +137,7 @@ public class OpenCvAutonomous extends LinearOpMode {
             else if(locationOfTSE == "not Found"){
 
                 sleep(400);
+                telemetry.clearAll();
                 telemetry.addData("one",barcode1);
                 telemetry.addData("two",barcode2);
                 telemetry.update();
@@ -141,12 +148,16 @@ public class OpenCvAutonomous extends LinearOpMode {
                     telemetry.update();
                     sleep(500);
                 }else if (barcode2 <= 50 && barcode2 >= 30) {
-                    craneMotor(-5,900);
+                    crane.setTargetPosition(-550);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Middle");
                     telemetry.update();
                     sleep(400);
                 }else{
-                    craneMotor(.5, 1500);
+                    crane.setTargetPosition(-300);
+                    crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    crane.setPower(.5);
                     telemetry.addLine("Left");
                     telemetry.update();
                     sleep(300);
@@ -156,7 +167,11 @@ public class OpenCvAutonomous extends LinearOpMode {
             gyroTurning(90);
 
             //reverse back into carousel
-            move(-0.3, 1300);
+            move(-0.3, 450);
+
+            gyroTurning(90);
+
+            move(-.3,450);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
@@ -167,7 +182,7 @@ public class OpenCvAutonomous extends LinearOpMode {
             move(0.5, 1660);
 
             //turning to shipping hub
-            gyroTurning(0);
+            gyroTurning(1);
             sleep(500);
 
             //move to delivery
@@ -179,13 +194,15 @@ public class OpenCvAutonomous extends LinearOpMode {
             sleep(750);
 
             //move back from shipping hub
-            //move(-0.5, 500);
+            move(-0.2, 200);
+            sleep(200);
 
             // turn 90
             gyroTurning(90);
 
-            //move to park
-            move(1, 1250);
+            move(1,1250);
+
+
         }
         webcam.stopStreaming();
     }
@@ -208,6 +225,8 @@ public class OpenCvAutonomous extends LinearOpMode {
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
+
+        crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         rangeSensorM = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
         rangeSensorR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "distanceR");
@@ -243,10 +262,10 @@ public class OpenCvAutonomous extends LinearOpMode {
                 break;
             } else if (angles.firstAngle >= targetAngle + 0.5) {
                 if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.3);
-                    frontRight.setPower(-0.3);
-                    backLeft.setPower(0.3);
-                    backRight.setPower(-0.3);
+                    frontLeft.setPower(0.15);
+                    frontRight.setPower(-0.15);
+                    backLeft.setPower(0.15);
+                    backRight.setPower(-0.15);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(0.5);
@@ -257,10 +276,10 @@ public class OpenCvAutonomous extends LinearOpMode {
                 }
             } else if (angles.firstAngle <= targetAngle - 0.5) {
                 if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.3);
-                    frontRight.setPower(0.3);
-                    backLeft.setPower(-0.3);
-                    backRight.setPower(0.3);
+                    frontLeft.setPower(-0.15);
+                    frontRight.setPower(0.15);
+                    backLeft.setPower(-0.15);
+                    backRight.setPower(0.15);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(-0.5);
