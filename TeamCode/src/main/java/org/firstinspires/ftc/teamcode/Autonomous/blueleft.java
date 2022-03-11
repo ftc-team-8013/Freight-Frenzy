@@ -59,6 +59,8 @@ public class blueleft extends LinearOpMode {
             robot.arm.setPosition(0);
             sleep(1500);
             //crane up out of the way
+            robot.crane.setTargetPosition(-900);
+            robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.crane.setPower(-1);
             sleep(3000);
 
@@ -146,7 +148,7 @@ public class blueleft extends LinearOpMode {
 
             robot.gyroTurning(-90);
 
-            robot.move(.8, 500);
+            robot.move(.8, 450);
 
             robot.gyroTurning(0);
             sleep(500);
@@ -168,7 +170,11 @@ public class blueleft extends LinearOpMode {
 
             sleep(500);
 
-            robot.move(.3, 1000);
+            robot.crane.setTargetPosition(-300);
+            robot.crane.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.crane.setPower(.5);
+
+            robot.move(.3, 950);
 
             //turn to warehouse
             robot.gyroTurning(90);
