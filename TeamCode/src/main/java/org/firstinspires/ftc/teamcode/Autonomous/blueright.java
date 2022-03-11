@@ -156,16 +156,12 @@ public class blueright extends LinearOpMode {
             robot.gyroTurning(90);
 
             //reverse back into carousel
-            robot.move(-.3, 600);
-            robot.gyroTurning(90);
-
-            //reverse back into carousel
-            robot.move(-.3, 800);
+            robot.move(-.3, 1000);
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
             //turns on the carousel motor to get the duck onto the floor
-            robot.carouselMotor(1,2000);
+            robot.carouselMotor(.85,2000);
 
 
             robot.move(.2,200);
@@ -182,6 +178,8 @@ public class blueright extends LinearOpMode {
             //move to delivery
             robot.move(0.25, 1050);
             sleep(200);
+
+            robot.gyroTurning(0);
 
             //open claw
             robot.arm.setPosition(1);
