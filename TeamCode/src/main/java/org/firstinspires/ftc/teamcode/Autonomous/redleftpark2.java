@@ -83,7 +83,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                         barcode1 = robot.rangeSensorM.cmUltrasonic();
                         sleep(400);
 
-                        robot.gyroTurning(12, 500L);
+                        robot.gyroTurning(12);
                         sleep(3000);
                         barcode2 = robot.rangeSensorM.cmUltrasonic();
                         break;
@@ -144,7 +144,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                     }
                 }
                 //turning 90 degrees counterclockwise to carousel
-                robot.gyroTurning(-90, 1500L);
+                robot.gyroTurning(-90);
 
                 //reverse back into carousel
                 robot.move(-.3, 1800);
@@ -157,13 +157,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
                 robot.move(.2, 200);
 
-                robot.gyroTurning(-90, 1500L);
+                robot.gyroTurning(-90);
 
                 //moving to warehouse
                 robot.move(.75, 900);
 
                 //turning to shipping hub
-                robot.gyroTurning(0, 1500L);
+                robot.gyroTurning(0);
                 sleep(500);
 
                 //move to delivery
@@ -186,7 +186,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 robot.move(.3, 400);
 
                 //turn to warehouse
-                robot.gyroTurning(90, 1500L);
+                robot.gyroTurning(90);
 
                 sleep(500);
 
@@ -197,7 +197,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
                 sleep(1200);
                 robot.stopMotors();
 
-                robot.gyroTurning(0, 1500L);
+                robot.gyroTurning(0);
 
                 robot.move(-.5, 500);
             }

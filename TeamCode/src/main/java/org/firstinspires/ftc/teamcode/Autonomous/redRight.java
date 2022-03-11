@@ -82,7 +82,7 @@ public class redRight extends LinearOpMode {
                     barcode1 = robot.rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    robot.gyroTurning(12, 500L);
+                    robot.gyroTurning(12);
                     sleep(3000);
                     barcode2 = robot.rangeSensorM.cmUltrasonic();
                     break;
@@ -146,11 +146,11 @@ public class redRight extends LinearOpMode {
 
             //strafeLeft(1, 950);
 
-            robot.gyroTurning(90, 1500L);
+            robot.gyroTurning(90);
 
             robot.move(.8, 500);
 
-            robot.gyroTurning(0, 1500L);
+            robot.gyroTurning(0);
 
             sleep(500);
 
@@ -178,18 +178,18 @@ public class redRight extends LinearOpMode {
             robot.move(.3, 1000);
 
             //turn to warehouse
-            robot.gyroTurning(-90, 1500L);
+            robot.gyroTurning(-90);
 
             sleep(500);
 
             //move to warehouse
             robot.move(1, 1300);
 
-            robot.gyroTurning(-90, 1500L);
+            robot.gyroTurning(-90);
 
             robot.strafeLeft(0.75, 500);
 
-            robot.gyroTurning(-90, 1500L);
+            robot.gyroTurning(-90);
 
             robot.move(0.5, 1000);
         }

@@ -75,17 +75,12 @@ public class robotClass {
 
 
     }
-    public boolean gyroTurning(double targetAngle, long duration) throws InterruptedException {
+    public boolean gyroTurning(double targetAngle) throws InterruptedException {
         boolean foundAngle = false;
         //while (foundAngle == false || did I reach time limit) {
-
-        long startTime = System.currentTimeMillis();
-        long currentTime = System.currentTimeMillis();
-        while (foundAngle == false || currentTime - startTime <= duration) {
+        while (foundAngle == false)  {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double currentAngle = angles.firstAngle;
-            currentTime = System.currentTimeMillis();
-
 
             if (angles.firstAngle >= targetAngle - 0.25 && angles.firstAngle <= targetAngle + 0.25) {
                 frontLeft.setPower(0);
@@ -124,7 +119,6 @@ public class robotClass {
                     foundAngle = false;
                 }
             }
-            currentTime = System.currentTimeMillis();
         }
         return foundAngle;
     }
