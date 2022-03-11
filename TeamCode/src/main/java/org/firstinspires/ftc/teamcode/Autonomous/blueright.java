@@ -89,9 +89,9 @@ public class blueright extends LinearOpMode {
                     barcode1 = rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    robot.gyroTurning(15, 1000L);
+                    robot.gyroTurning(15);
                     sleep(1000);
-                    robot.gyroTurning(-90, 1500L);
+                    robot.gyroTurning(-90);
                     barcode2 = rangeSensorM.cmUltrasonic();
                     break;
             }
@@ -153,11 +153,11 @@ public class blueright extends LinearOpMode {
 
             }
             //turning 90 degrees counterclockwise to carousel
-            robot.gyroTurning(90, 1500L);
+            robot.gyroTurning(90);
 
             //reverse back into carousel
             robot.move(-.3, 600);
-            robot.gyroTurning(90, 500L);
+            robot.gyroTurning(90);
 
             //reverse back into carousel
             robot.move(-.3, 800);
@@ -170,13 +170,13 @@ public class blueright extends LinearOpMode {
 
             robot.move(.2,200);
 
-            robot.gyroTurning(90, 500L);
+            robot.gyroTurning(90);
 
             //moving to warehouse
             robot.move(.75,900);
 
             //turning to shipping hub
-            robot.gyroTurning(0, 1500L);
+            robot.gyroTurning(0);
             sleep(500);
 
             //move to delivery
@@ -196,7 +196,7 @@ public class blueright extends LinearOpMode {
             robot.move(.3,300);
 
             //turn to warehouse
-            robot.gyroTurning(-90, 1500L);
+            robot.gyroTurning(-90);
 
             sleep(500);
 
@@ -211,7 +211,7 @@ public class blueright extends LinearOpMode {
             sleep(1250);
             robot.stopMotors();
 
-            robot.gyroTurning(0, 1500L);
+            robot.gyroTurning(0);
 
             robot.move(-.5,500);
 

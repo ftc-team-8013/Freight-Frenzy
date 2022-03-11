@@ -82,7 +82,7 @@ public class blueleft extends LinearOpMode {
                     barcode1 = rangeSensorM.cmUltrasonic();
                     sleep(400);
 
-                    robot.gyroTurning(12, 1000L);
+                    robot.gyroTurning(12);
                     sleep(3000);
                     barcode2 = rangeSensorM.cmUltrasonic();
                     break;
@@ -144,11 +144,11 @@ public class blueleft extends LinearOpMode {
 
             //strafeLeft(1, 950);
 
-            robot.gyroTurning(-90, 1500L);
+            robot.gyroTurning(-90);
 
             robot.move(.8, 500);
 
-            robot.gyroTurning(0, 1500L);
+            robot.gyroTurning(0);
 
             sleep(500);
 
@@ -172,7 +172,7 @@ public class blueleft extends LinearOpMode {
             robot.move(.3, 750);
 
             //turn to warehouse
-            robot.gyroTurning(90, 1500L);
+            robot.gyroTurning(90);
 
             sleep(500);
 

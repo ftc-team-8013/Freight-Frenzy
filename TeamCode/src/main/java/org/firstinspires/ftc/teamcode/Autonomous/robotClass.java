@@ -65,19 +65,14 @@ public class robotClass {
 
 
     }
-    public boolean gyroTurning(double targetAngle, long duration) throws InterruptedException {
+    public boolean gyroTurning(double targetAngle) throws InterruptedException {
         boolean foundAngle = false;
-        //while (foundAngle == false || did I reach time limit) {
-
-        long startTime = System.currentTimeMillis();
-        long currentTime = System.currentTimeMillis();
-        while (foundAngle == false || currentTime - startTime >= duration) {
+        //while (opModeIsActive()) {
+        while (foundAngle == false) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double currentAngle = angles.firstAngle;
-            currentTime = System.currentTimeMillis();
 
-
-            if (angles.firstAngle >= targetAngle - 0.15 && angles.firstAngle <= targetAngle + 0.15) {
+            if (angles.firstAngle >= targetAngle - 0.1 && angles.firstAngle <= targetAngle + 0.1) {
                 frontLeft.setPower(0);
                 frontRight.setPower(0);
                 backLeft.setPower(0);
@@ -87,10 +82,10 @@ public class robotClass {
                 break;
             } else if (angles.firstAngle >= targetAngle + 0.5) {
                 if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.15);
-                    frontRight.setPower(-0.15);
-                    backLeft.setPower(0.15);
-                    backRight.setPower(-0.15);
+                    frontLeft.setPower(0.3);
+                    frontRight.setPower(-0.3);
+                    backLeft.setPower(0.3);
+                    backRight.setPower(-0.3);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(0.5);
@@ -101,10 +96,10 @@ public class robotClass {
                 }
             } else if (angles.firstAngle <= targetAngle - 0.5) {
                 if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.15);
-                    frontRight.setPower(0.15);
-                    backLeft.setPower(-0.15);
-                    backRight.setPower(0.15);
+                    frontLeft.setPower(-0.3);
+                    frontRight.setPower(0.3);
+                    backLeft.setPower(-0.3);
+                    backRight.setPower(0.3);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(-0.5);
@@ -114,7 +109,6 @@ public class robotClass {
                     foundAngle = false;
                 }
             }
-            currentTime = System.currentTimeMillis();
         }
         return foundAngle;
     }
