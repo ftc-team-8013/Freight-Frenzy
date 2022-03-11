@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Rect;
 
-public class TeamShippingElementDetector extends OpenCvPipeline{
+public class TeamShippingElementDetector extends OpenCvPipeline {
     Telemetry telemetry;
     Mat mat = new Mat();
 
@@ -31,7 +31,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
 
     static final Rect RIGHT_ROI = new Rect(
             new Point(240, 10),
-            new Point(270, 150));
+            new Point(320, 150));
 
     static double percentThreshold = 0.05;
 
@@ -50,10 +50,6 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
         // Orangish
         Scalar orangeLowHSV = new Scalar(0, 59, 107);
         Scalar orangeHighHSV = new Scalar(71, 183, 255);
-
-        //white
-        Scalar whiteLowHSV = new Scalar(50,50,50);
-        Scalar whiteHighHSV = new Scalar(255,255,255);
 
         //green
         Scalar greenLowHSV = new Scalar(40,40,40);
@@ -106,3 +102,4 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
         return location;
     }
 }
+

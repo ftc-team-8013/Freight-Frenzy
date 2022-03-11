@@ -19,8 +19,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous
+@Disabled
+public class redRightCarouselold extends LinearOpMode {
 
-public class blueRightCarousel extends LinearOpMode {
+    //old code
 
     BNO055IMU imu;
     Orientation angles;
@@ -30,7 +32,6 @@ public class blueRightCarousel extends LinearOpMode {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
-    DcMotor redcarousel;
 
     DcMotor carousel;
     DcMotor crane;
@@ -62,53 +63,58 @@ public class blueRightCarousel extends LinearOpMode {
             double barcode1 = rangeSensorM.cmUltrasonic();
             sleep(400);
 
-            gyroTurning(12);
-            sleep(3000);
+            gyroTurning(24);
+
             double barcode2 = rangeSensorM.cmUltrasonic();
             sleep(400);
-            telemetry.addData("one", barcode1);
-            telemetry.addData("two", barcode2);
+            telemetry.addData("one",barcode1);
+            telemetry.addData("two",barcode2);
             telemetry.update();
 
-            //turning 90 degrees counterclockwise
-            gyroTurning(90);
+            move(.5, 400);
 
-            //reverse back into carousel
-            move(-0.3, 1300);
+            //turing forward to make strafing easier
+            gyroTurning(0);
+
+            //strafing into the carousel
+            strafeLeft(.75, 1900);
+
+            move(0.1, 100);
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
             sleep(500);
 
             //turns on the carousel motor to get the duck onto the floor
-            carouselMotor(1, 2000);
-            //changed power of motor from .5
+            carouselMotor(-1, 2000);
+
+            gyroTurning(-90);
 
             //turning on the crane motor making the crane go up and avoid the terrain
-            if (barcode1 <= 45 && barcode1 >= 30) {
+            if(barcode1 <= 45 && barcode1 >= 30){
                 craneMotor(.5, 1500);
                 telemetry.addLine("Right");
                 telemetry.update();
                 sleep(500);
-            } else if (barcode2 <= 50 && barcode2 >= 30) {
-                craneMotor(-5, 900);
+            }else if (barcode2 <= 50 && barcode2 >= 30) {
+                craneMotor(.5,900);
                 telemetry.addLine("Middle");
                 telemetry.update();
                 sleep(400);
-            } else {
+            }else{
                 telemetry.addLine("Left");
                 telemetry.update();
                 sleep(300);
             }
 
             //moving to warehouse
-            move(0.5, 1680);
+            move(0.5, 1750);
 
             //turning to shipping hub
             gyroTurning(0);
             sleep(500);
 
             //move to delivery
-            move(0.25, 1450);
+            move(0.5, 800);
             sleep(750);
 
             //open claw
@@ -116,23 +122,17 @@ public class blueRightCarousel extends LinearOpMode {
             sleep(750);
 
             //move back from shipping hub
-            move(-0.5, 500);
-            //250 to 200
+            move(-0.5, 700);
 
+            sleep(300);
 
-            // turn 90
-            gyroTurning(90);
+            // turn -90
+            gyroTurning(-90);
 
-            //if (rangeSensorM.cmUltrasonic() <=50) {
-            //telemetry.addLine("hi");
-            //telemetry.update();
-            //stopMotors();
-            //}
-            //else {
-            //move(1,1750);
-            //}
             //move to warehouse
-            move(1, 1750);
+            move(1, 1800);
+
+
 
         }
     }
@@ -153,7 +153,6 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
     public void initMiscMotors() {
-        redcarousel = hardwareMap.get(DcMotor.class, "redcarousel");
         carousel = hardwareMap.get(DcMotor.class, "carousel");
         crane = hardwareMap.get(DcMotor.class, "crane");
         arm = hardwareMap.get(Servo.class, "arm");
@@ -224,14 +223,14 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
 
-    public void stopMotors() {
+    public void stopMotors(){
         frontLeft.setPower(0);
         frontRight.setPower(0);
         backLeft.setPower(0);
         backRight.setPower(0);
     }
 
-    public void move(double power, int time) {
+    public void move(double power, int time){
         frontLeft.setPower(power);
         frontRight.setPower(power);
         backLeft.setPower(power);
@@ -240,7 +239,7 @@ public class blueRightCarousel extends LinearOpMode {
         stopMotors();
     }
 
-    public void strafeLeft(double power, int time) {
+    public void strafeLeft(double power, int time){
         frontLeft.setPower(-power);
         frontRight.setPower(power);
         backLeft.setPower(power);
@@ -249,7 +248,7 @@ public class blueRightCarousel extends LinearOpMode {
         stopMotors();
     }
 
-    public void strafeRight(double power, int time) {
+    public void strafeRight(double power, int time){
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         backLeft.setPower(-power);
@@ -259,23 +258,17 @@ public class blueRightCarousel extends LinearOpMode {
     }
 
     //Other methods
-    public void carouselMotor(double power, int time) {
+    public void carouselMotor(double power, int time){
         carousel.setPower(power);
         sleep(time);
         carousel.setPower(0);
     }
 
-    public void craneMotor(double power, int time) {
+    public void craneMotor(double power, int time){
         crane.setPower(power);
         sleep(time);
         crane.setPower(0);
     }
 
 
-    public void redcarouselMotor(double power, int time) {
-        redcarousel.setPower(power);
-        sleep(time);
-        redcarousel.setPower(0);
-    }
 }
-
