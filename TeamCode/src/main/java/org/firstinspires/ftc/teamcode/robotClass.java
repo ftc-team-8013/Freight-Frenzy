@@ -60,6 +60,8 @@ public class robotClass {
         crane = ahsMap.get(DcMotor.class, "crane");
         arm = ahsMap.get(Servo.class, "arm");
 
+        crane.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         rangeSensorM = ahsMap.get(ModernRoboticsI2cRangeSensor.class, "distanceM");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
