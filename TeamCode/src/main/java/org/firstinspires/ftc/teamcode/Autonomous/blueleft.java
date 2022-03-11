@@ -149,11 +149,10 @@ public class blueleft extends LinearOpMode {
             robot.move(.8, 500);
 
             robot.gyroTurning(0);
-
             sleep(500);
 
             //forward
-            robot.move(.4, 500);
+            robot.move(.4, 600);
 
 
             //basic sleeping to make sure we are turning the motors as soon as the robot stops
@@ -169,7 +168,7 @@ public class blueleft extends LinearOpMode {
 
             sleep(500);
 
-            robot.move(.3, 750);
+            robot.move(.3, 1000);
 
             //turn to warehouse
             robot.gyroTurning(90);
@@ -177,7 +176,15 @@ public class blueleft extends LinearOpMode {
             sleep(500);
 
             //move to warehouse
-            robot.move(1, 1300);
+            robot.move(1, 1500);
+
+            robot.gyroTurning(90);
+
+            robot.strafeRight(0.75, 500);
+
+            robot.gyroTurning(90);
+
+            robot.move(0.5, 1000);
 
 
         }

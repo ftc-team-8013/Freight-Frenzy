@@ -71,7 +71,7 @@ public class TeamShippingElementDetector extends OpenCvPipeline{
 
         mid.release();
 
-        telemetry.addData("raw Mid value", (int) Core.sumElems(mid).val[0]);
+
         telemetry.addData("Mid percentage", Math.round(midValue * 100) + "%");
 
         boolean tseLeft = leftValue > percentThreshold;
