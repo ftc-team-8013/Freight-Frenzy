@@ -84,10 +84,10 @@ public class robotClass {
                 break;
             } else if (angles.firstAngle >= targetAngle + 0.5) {
                 if (angles.firstAngle <= targetAngle + 10) {
-                    frontLeft.setPower(0.3);
-                    frontRight.setPower(-0.3);
-                    backLeft.setPower(0.3);
-                    backRight.setPower(-0.3);
+                    frontLeft.setPower(0.2);
+                    frontRight.setPower(-0.2);
+                    backLeft.setPower(0.2);
+                    backRight.setPower(-0.2);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(0.5);
@@ -98,10 +98,10 @@ public class robotClass {
                 }
             } else if (angles.firstAngle <= targetAngle - 0.5) {
                 if (angles.firstAngle >= targetAngle - 10) {
-                    frontLeft.setPower(-0.3);
-                    frontRight.setPower(0.3);
-                    backLeft.setPower(-0.3);
-                    backRight.setPower(0.3);
+                    frontLeft.setPower(-0.2);
+                    frontRight.setPower(0.2);
+                    backLeft.setPower(-0.2);
+                    backRight.setPower(0.2);
                     foundAngle = false;
                 } else {
                     frontLeft.setPower(-0.5);

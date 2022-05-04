@@ -193,6 +193,6 @@ public class redRight extends LinearOpMode {
 
             robot.move(0.5, 1000);
         }
-        webcam.stopStreaming();
+//        webcam.stopStreaming();
     }
 }

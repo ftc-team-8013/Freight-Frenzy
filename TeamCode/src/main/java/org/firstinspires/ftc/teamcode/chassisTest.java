@@ -55,6 +55,7 @@ public class chassisTest extends LinearOpMode {
             double cranePower;
             boolean armToggle;
             double carouselPower;
+            double redCarouselPower;
 
             throttle = gamepad1.left_stick_y;
             turn = gamepad1.right_stick_x;
@@ -64,6 +65,7 @@ public class chassisTest extends LinearOpMode {
             cranePower = gamepad2.left_stick_y;
             armToggle = gamepad2.x;
             carouselPower = gamepad2.left_trigger;
+            redCarouselPower = gamepad2.right_trigger * -1;
 
             //making motors run.
             //strafing
@@ -98,6 +100,7 @@ public class chassisTest extends LinearOpMode {
                 arm.setPosition(1);
             }
             carousel.setPower(carouselPower);
+            redcarousel.setPower(redCarouselPower);
           
             telemetry.addData("Elevator Trim", cranePower);
             System.out.println("servo position "+ arm.getPosition());
